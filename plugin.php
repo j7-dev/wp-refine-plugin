@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Plugin Name: WP React Plugin
- * Description: WP React Plugin is a boilerplate for creating a WordPress plugin with React, Tailwind, TypeScript, React Query v4, SCSS and Vite.
+ * Plugin Name: WP Refine Plugin
+ * Description: WP Refine Plugin is a boilerplate for creating a WordPress plugin with React, Tailwind, TypeScript, React Query v4, SCSS and Vite.
  * Author: j7.dev
  * Author URI: https://github.com/j7-dev
  * License: GPLv2
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires PHP: 7.4.0
  */
 

@@ -1,8 +1,5 @@
-# WP React Plugin
+# WP Refine Plugin
 
-
-
-[live demo](https://test.yc-tech.co/)
 
 ## ⚡Features⚡
 
@@ -32,14 +29,13 @@ Tech stacks (knowledge you need to have)
 #### Front-end
 
 1. [Vite](https://vitejs.dev/) - build tool
-2. [React v18](https://beta.reactjs.org/)
-3. [TypeScript](https://www.typescriptlang.org/docs/) - compile project with type safe
-4. [Tailwind v3](https://tailwindcss.com/) - you can install any UI library, like Ant Design, MUI, Chakra...etc
-5. [SCSS](https://sass-lang.com/documentation/syntax)
-6. [React Query v4](https://tanstack.com/query/v4) - managing API status
-
-#### Front-end (Optional)
-1. [React Router v6](https://reactrouter.com/en/main) - front-end router
+2. [Refine](https://refine.dev/) - React Admin Framework with lots of useful utilities
+3. [React v18](https://beta.reactjs.org/)
+4. [TypeScript](https://www.typescriptlang.org/docs/) - compile project with type safe
+5. [Tailwind v3](https://tailwindcss.com/) - you can install any UI library, like Ant Design, MUI, Chakra...etc
+6. [SCSS](https://sass-lang.com/documentation/syntax)
+7. [React Query v4](https://tanstack.com/query/v4) - managing API status
+8. [React Router v6](https://reactrouter.com/en/main) - front-end router, we use #️⃣hash router by default which is compatible with WordPress's router
 
 #### Back-end
 
@@ -61,9 +57,6 @@ Tech stacks (knowledge you need to have)
    npm run bootstrap # This will run `npm install` & `composer install`
    npm run dev
    ```
-
-
-
 
 3. Change the API url to your project in `.env.development`
 
@@ -105,261 +98,6 @@ Tech stacks (knowledge you need to have)
 
 8. 🎉🎉🎉 Enjoy the dev 🎉🎉🎉
 
-## Build
-
-```shell
-npm run build
-```
-
-After you build the project will apply `.env.production` and enqueue the hashed assets in `js/dist` folder.
-
-the files in `js/dist` is EXACT the files of your plugin, you can only upload the `js/dist` if you don't want to share the `src` source code
-
-## Functions: Simple CRUD for WordPress Restful API
-
-path: `js\src\api\resources`
-
-### `createResource`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string,
-  // ↑ WordPress RESTFUL API Endpoint like: posts, users, products
-  args?: {
-    [key: string]: any
-  },
-  // ↑ Check the WordPress RESTFUL API Endpoint args
-  config?: any
-  // ↑ This is Axios Config, see more info in https://axios-http.com/
-  // ex: change headers config for special use
-}
-```
-
-#### - Return:
-
-The created Resource id
-
-#### - Example:
-
-```javascript
-const createPost = await createResource({
-  resource: 'posts',
-  args: {
-    title: 'Post Created by API',
-    status: 'publish',
-  },
-})
-```
-
-### `getResource`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string,
-  // ↑ WordPress RESTFUL API Endpoint like: posts, users, products
-  id: number,
-  args?: {
-    [key: string]: any
-  },
-  // ↑ Check the WordPress RESTFUL API Endpoint args (url params)
-}
-```
-
-#### - Return:
-
-WordPress Object
-
-#### - Example:
-
-```javascript
-// get the post with id = 200
-const getPost = await getResource({
-  resource: 'posts',
-  id: 200,
-})
-```
-
-### `getResources`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string,
-  // ↑ WordPress RESTFUL API Endpoint like: posts, users, products
-  args?: {
-    [key: string]: any
-  },
-  // ↑ Check the WordPress RESTFUL API Endpoint args (url params)
-}
-```
-
-#### - Return:
-
-WordPress Object Array
-
-#### - Example:
-
-```javascript
-// get the all posts that author_id = 1
-const getPosts = await getResources({
-  resource: 'posts',
-  args: {
-    author: 1,
-  },
-})
-```
-
-### `updateResource`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string,
-  // ↑ WordPress RESTFUL API Endpoint like: posts, users, products
-  id: number,
-  args?: {
-    [key: string]: any
-  },
-  // ↑ Check the WordPress RESTFUL API Endpoint args (url params)
-}
-```
-
-#### - Return:
-
-Update Status
-
-#### - Example:
-
-```javascript
-// update the title with post_id = 200
-const updatePost = await updateResource({
-  resource: 'posts',
-  id: 200,
-  args: {
-    title: 'Update Title by API',
-  },
-})
-```
-
-### `deleteResource`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string,
-  // ↑ WordPress RESTFUL API Endpoint like: posts, users, products
-  id: number,
-}
-```
-
-#### - Return:
-
-Delete Status
-
-#### - Example:
-
-```javascript
-// delete the post with id = 200
-const deletePost = await deleteResource({
-  resource: 'posts',
-  id: 200,
-})
-```
-
-## Custom Hooks
-
-### `useOne`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string
-  // WordPress RESTFUL API Endpoint like: posts, users, products
-  id: number
-  queryOptions?: {
-    // please visit React Query for more detail
-    staleTime?: number
-    cacheTime?: number
-    refetchOnWindowFocus?: boolean
-    refetchOnMount?: boolean
-    refetchOnReconnect?: boolean
-    refetchInterval?: number
-    retry?: boolean | number
-    retryDelay?: number
-    enabled?: boolean
-  }
-}
-```
-
-#### - Return:
-
-WordPress Object
-
-#### - Example:
-
-```javascript
-// get the post with id = 200
-const post = useOne({
-  resource: 'posts',
-  id: 200,
-})
-
-// get the user with id = 1
-const user = useOne({
-  resource: 'users',
-  id: 1,
-})
-```
-
-### `useMany`
-
-#### - Properties:
-
-```typescript
-{
-  resource: string
-  // WordPress RESTFUL API Endpoint like: posts, users, products
-  args?: Record<string, any>
-  // please visit WordPress RESTFUL API Handbook for more detail
-  queryOptions?: {
-    // please visit React Query for more detail
-    staleTime?: number
-    cacheTime?: number
-    refetchOnWindowFocus?: boolean
-    refetchOnMount?: boolean
-    refetchOnReconnect?: boolean
-    refetchInterval?: number
-    retry?: boolean | number
-    retryDelay?: number
-    enabled?: boolean
-  }
-}
-```
-
-#### - Return:
-
-WordPress Object Array
-
-#### - Example:
-
-```javascript
-// get all posts that author_id = 1
-const posts = useMany({
-  resource: 'posts',
-  args: {
-    author: 1,
-  },
-})
-```
-
 ---
 
 ## Any Suggestion ?
@@ -373,5 +111,5 @@ If this project is useful for you, please give me a github star ⭐
 ## Reference
 
 1. Inspired by [Vite for WP](https://github.com/kucrut/vite-for-wp)
-2. API design Inspired by [Refine](https://refine.dev/)
+2. [Refine](https://refine.dev/)
 3. [WordPress REST API Handbook](https://developer.wordpress.org/rest-api/reference/)
