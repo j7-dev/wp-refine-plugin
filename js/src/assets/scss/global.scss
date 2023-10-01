@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .container {
+  max-width: 1280px;
+  margin: 0 auto;
+} */
+
+body {
+	margin: 0 !important;
+}
+input[class*="ant-select"] {
+	box-shadow: none !important;
+	border: none !important;
+	outline: none !important;
+}
+
+@media print {
+	html,
+	body {
+		height: 100%; /* Use 100% here to support printing more than a single page*/
+		width: 297mm;
+		margin: 0 !important;
+		padding: 10mm !important;
+		overflow: hidden;
+	}
+}

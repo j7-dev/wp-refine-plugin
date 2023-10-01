@@ -1,0 +1,36 @@
+{
+  "name": "j7-dev/wp-react-plugin",
+  "description": "This is a boilerplate for creating a WordPress plugin with React, Tailwind, Ant Design, TypeScript, Zod, MSW, React Router v6, React Query v4, SCSS and Vite.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-only",
+  "authors": [
+    {
+      "name": "JerryLiu",
+      "email": "j7.dev.gg@outlook.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "require": {
+    "kucrut/vite-for-wp": "^0.5.2",
+    "usefulteam/jwt-auth": "^2.1",
+    "vlucas/phpdotenv": "^5.5",
+    "lodash-php/lodash-php": "^0.0.7"
+  },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "^2.3",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
+  },
+  "scripts": {
+    "lint": "phpcs"
+  }
+}
