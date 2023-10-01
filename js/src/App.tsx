@@ -8,8 +8,6 @@ import { Refine } from '@refinedev/core'
 import {
   ErrorComponent,
   notificationProvider,
-  ThemedLayoutV2,
-  ThemedSiderV2,
 } from '@refinedev/antd'
 import '@refinedev/antd/dist/reset.css'
 import routerBindings, {
@@ -19,6 +17,7 @@ import routerBindings, {
 import { dataProvider } from './rest-data-provider'
 import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { apiUrl } from '@/utils'
+import {resources} from '@/resources'
 
 function App() {
   return (
@@ -32,28 +31,7 @@ function App() {
         }}
         notificationProvider={notificationProvider}
         routerProvider={routerBindings}
-        resources={[
-          {
-            name: 'blog_posts',
-            list: '/blog-posts',
-            create: '/blog-posts/create',
-            edit: '/blog-posts/edit/:id',
-            show: '/blog-posts/show/:id',
-            meta: {
-              canDelete: true,
-            },
-          },
-          {
-            name: 'categories',
-            list: '/categories',
-            create: '/categories/create',
-            edit: '/categories/edit/:id',
-            show: '/categories/show/:id',
-            meta: {
-              canDelete: true,
-            },
-          },
-        ]}
+        resources={resources}
         options={{
           syncWithLocation: false,
           warnWhenUnsavedChanges: true,
@@ -62,13 +40,7 @@ function App() {
       >
         <Routes>
           <Route
-            element={
-              <ThemedLayoutV2
-                Sider={(props) => <ThemedSiderV2 {...props} fixed />}
-              >
-                <Outlet />
-              </ThemedLayoutV2>
-            }
+            element={<Outlet />}
           >
             <Route index element={<DefaultPage />} />
             <Route path="/about" element={<About />} />
