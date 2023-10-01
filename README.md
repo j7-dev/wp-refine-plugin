@@ -11,7 +11,7 @@
    By default, the `API_URL` would be `{site_url}/wp-json}` which is set in `inc/admin.php`
 
 3. CRUD utility function<br>
-   Default with `getPost` Example, check [more utilities](#functions-simple-crud-for-wordpress-restful-api)
+   Default with `getPost` Example, check [more utilities in Refine](https://refine.dev/docs/#what-is-refine)
 
 4. Integrate with JWT<br>
    We use `usefulteam/jwt-auth` in composer, every time a WordPress user logged in, he will get JWT (for call API, if the user has enough capability) automatically.
