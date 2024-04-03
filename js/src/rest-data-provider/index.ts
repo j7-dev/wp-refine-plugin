@@ -1,12 +1,14 @@
 import { DataProvider } from '@refinedev/core'
 import { axiosInstance, generateSort, generateFilter } from './utils'
 import { AxiosInstance } from 'axios'
-import { stringify } from 'query-string'
+import queryString from 'query-string'
 
 export * from './utils'
 
 type MethodTypes = 'get' | 'delete' | 'head' | 'options'
 type MethodTypesWithBody = 'post' | 'put' | 'patch'
+
+const { stringify } = queryString
 
 export const dataProvider = (
   apiUrl: string,

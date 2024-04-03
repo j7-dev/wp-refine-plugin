@@ -1,7 +1,7 @@
 import { useList, useMany } from '@refinedev/core'
 import { renderHTML } from '@/utils'
 import defaultImage from '@/assets/images/defaultImage.jpg'
-import { TPost, TImage } from '@/types'
+import { TPost, TImage } from '@/types/wpRestApi'
 
 const GetPostsPage = () => {
   const { data, isLoading } = useList({

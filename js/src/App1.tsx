@@ -5,10 +5,7 @@ import About from '@/pages/about'
 
 import { Refine } from '@refinedev/core'
 
-import {
-  ErrorComponent,
-  notificationProvider,
-} from '@refinedev/antd'
+import { ErrorComponent, notificationProvider } from '@refinedev/antd'
 import '@refinedev/antd/dist/reset.css'
 import routerBindings, {
   DocumentTitleHandler,
@@ -17,7 +14,7 @@ import routerBindings, {
 import { dataProvider } from './rest-data-provider'
 import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { apiUrl } from '@/utils'
-import {resources} from '@/resources'
+import { resources } from '@/resources'
 
 function App() {
   return (
@@ -39,9 +36,7 @@ function App() {
         }}
       >
         <Routes>
-          <Route
-            element={<Outlet />}
-          >
+          <Route element={<Outlet />}>
             <Route index element={<DefaultPage />} />
             <Route path="/about" element={<About />} />
 
