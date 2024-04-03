@@ -1,37 +1,25 @@
-function removeTrailingSlash(str: string) {
-  if (str.endsWith('/')) {
-    // 如果字符串以斜杠结尾，使用 slice 方法去除最后一个字符
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 
-    return str.slice(0, -1)
-  }
+import { removeTrailingSlash } from '@/utils'
 
-  // 否则，返回原字符串
-
-  return str
-}
-
-export const appName = import.meta.env.APP_NAME || 'Power Shop'
-export const kebab = appName.toLowerCase().replace(/\s+/g, '-')
-export const snake = appName.toLowerCase().replace(/\s+/g, '_')
-export const renderId1 = import.meta.env.VITE_RENDER_ID_1 || 'my-app'
-export const renderId2 = import.meta.env.VITE_RENDER_ID_2 || 'my-app'
-export const renderId3 = import.meta.env.VITE_RENDER_ID_3 || 'my-app'
-export const renderId4 = import.meta.env.VITE_RENDER_ID_4 || 'my-app'
-
-export const apiUrl = removeTrailingSlash(
-  window?.wpApiSettings?.root || '/wp-json',
-)
-export const ajaxUrl = removeTrailingSlash(
-  window?.appData?.ajaxUrl || '/wp-admin/admin-ajax.php',
-)
-export const siteUrl = removeTrailingSlash(window?.appData?.siteUrl || '/')
-export const checkoutUrl = removeTrailingSlash(
-  window?.appData?.checkoutUrl || '/checkout',
-)
-export const ajaxNonce = window?.appData?.ajaxNonce || ''
-export const currentUserId = window?.appData?.userId || '0'
-export const postId = window?.appData?.postId || '0'
-export const permalink = window?.appData?.permalink || '/'
-
-export const apiTimeout = import.meta.env.VITE_API_TIMEOUT || '30000'
-export const defaultImage = `${siteUrl}/wp-content/power-shop-release/js/dist/defaultImage.jpg`
+const APP_DOMAIN = 'my_app_data' as string
+export const snake = window?.[APP_DOMAIN]?.env?.SNAKE || 'my_app'
+export const appName = window?.[APP_DOMAIN]?.env?.APP_NAME || 'My App'
+export const kebab = window?.[APP_DOMAIN]?.env?.KEBAB || 'my-app'
+export const app1Selector = window?.[APP_DOMAIN]?.env?.APP1_SELECTOR || 'my_app'
+export const app2Selector =
+  window?.[APP_DOMAIN]?.env?.APP2_SELECTOR || 'my_app_metabox'
+export const apiUrl =
+  removeTrailingSlash(window?.wpApiSettings?.root) || '/wp-json'
+export const ajaxUrl =
+  removeTrailingSlash(window?.[APP_DOMAIN]?.env?.ajaxUrl) ||
+  '/wp-admin/admin-ajax.php'
+export const siteUrl =
+  removeTrailingSlash(window?.[APP_DOMAIN]?.env?.siteUrl) || '/'
+export const currentUserId = window?.[APP_DOMAIN]?.env?.userId || '0'
+export const postId = window?.[APP_DOMAIN]?.env?.postId || '0'
+export const permalink =
+  removeTrailingSlash(window?.[APP_DOMAIN]?.env?.permalink) || '/'
+export const apiTimeout = '30000'
+export const ajaxNonce = window?.[APP_DOMAIN]?.env?.nonce || ''

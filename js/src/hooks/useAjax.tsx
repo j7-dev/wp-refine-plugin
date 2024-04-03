@@ -1,54 +1,33 @@
-import { useState, useEffect } from 'react'
-import { useCustomMutation } from '@refinedev/core'
-import { ajaxUrl, ajaxNonce } from '@/utils'
-import { UseCustomMutationReturnType } from '@refinedev/core/src/hooks/data/useCustomMutation'
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { adminAjax, TAdminAjaxArgs } from '@/api'
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
+import { ajaxNonce } from '@/utils'
 
-type TProps = {
-  action: string
-  formatter?: (_response: object) => any
-  [key: string]: any
-}
+export const useAjax = (options?: {
+  args?: Omit<TAdminAjaxArgs, 'nonce'>
+  config?: AxiosRequestConfig<{ [key: string]: any }> | undefined
+  mutationOptions?: UseMutationOptions<
+    AxiosResponse,
+    AxiosError,
+    Omit<TAdminAjaxArgs, 'nonce'>
+  >
+}) => {
+  const args = options?.args || undefined
+  const config = options?.config || undefined
+  const mutationOptions = options?.mutationOptions ?? {}
+  const mutationFn = (fnProps?: Omit<TAdminAjaxArgs, 'nonce'>) =>
+    adminAjax({
+      args: {
+        ...(fnProps || args || {}),
+        nonce: ajaxNonce,
+      } as TAdminAjaxArgs,
+      config,
+    })
+  const result = useMutation({
+    mutationFn,
+    ...mutationOptions,
+  })
 
-export function useAjax<T>(
-  props: TProps,
-): { response: T | undefined } & UseCustomMutationReturnType {
-  const [
-    response,
-    setResponse,
-  ] = useState<T | undefined>(undefined)
-
-  const mutation = useCustomMutation()
-  const { mutate } = mutation
-
-  useEffect(() => {
-    mutate(
-      {
-        url: ajaxUrl,
-        method: 'post',
-        values: {
-          ...props,
-          nonce: ajaxNonce,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          const res = data?.data?.data || {}
-          if (props.formatter) {
-            const formattedResponse = props.formatter(res) as T
-            setResponse(formattedResponse)
-          } else {
-            setResponse(res as T)
-          }
-        },
-        onError: (error) => {
-          console.log(error)
-        },
-      },
-    )
-  }, [])
-
-  return {
-    ...mutation,
-    response,
-  }
+  return result
 }

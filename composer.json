@@ -1,12 +1,14 @@
 {
-  "name": "j7-dev/wp-react-plugin",
+  "name": "j7-dev/wp-refine-plugin",
   "description": "This is a boilerplate for creating a WordPress plugin with React, Tailwind, Ant Design, TypeScript, Zod, MSW, React Router v6, React Query v4, SCSS and Vite.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-only",
   "authors": [
     {
       "name": "JerryLiu",
-      "email": "j7.dev.gg@outlook.com"
+      "email": "j7.dev.gg@gmail.com",
+      "homepage": "https://github.com/j7-dev",
+      "role": "Developer"
     }
   ],
   "repositories": [
@@ -21,14 +23,16 @@
     }
   },
   "require": {
-    "kucrut/vite-for-wp": "^0.5.2",
+		"kucrut/vite-for-wp": "^0.8.0",
     "usefulteam/jwt-auth": "^2.1",
-    "vlucas/phpdotenv": "^5.5",
-    "lodash-php/lodash-php": "^0.0.7"
+    "lodash-php/lodash-php": "^0.0.7",
+    "yahnis-elsts/plugin-update-checker": "^5.3",
+    "j7-dev/tgm-plugin-activation-forked": "^1.0"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "^2.3",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
+		"squizlabs/php_codesniffer": "@stable",
+    "wp-coding-standards/wpcs": "@stable",
+    "dealerdirect/phpcodesniffer-composer-installer": "@stable"
   },
   "scripts": {
     "lint": "phpcs"

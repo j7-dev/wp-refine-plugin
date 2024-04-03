@@ -1,5 +1,3 @@
-import { wpResources } from "./wp-rest"
+import { wpResources } from './wp-rest'
 
-export const resources = [
-	...wpResources
-]
+export const resources = [...wpResources]

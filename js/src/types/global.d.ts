@@ -4,15 +4,23 @@ declare global {
     nonce: string
   }
   var appData: {
-    siteUrl: string
-    ajaxUrl: string
-    ajaxNonce: string
-    userId: string
-    postId: string
-    permalink: string
-    checkoutUrl: string
+    env: {
+      siteUrl: string
+      ajaxUrl: string
+      ajaxNonce: string
+      userId: string
+      postId: string
+      permalink: string
+      APP_NAME: string
+      KEBAB: string
+      SNAKE: string
+      BASE_URL: string
+      APP1_SELECTOR: string
+      APP2_SELECTOR: string
+      API_TIMEOUT: string
+    }
   }
-	var wp: {
+  var wp: {
     blocks: any
   }
 }

@@ -32,7 +32,7 @@ function App() {
         }}
         notificationProvider={notificationProvider}
         routerProvider={routerBindings}
-        resources={[
+        resources={[c:\Users\jerry.liu\Desktop\test\wp-react-plugin\js\src\api
           {
             name: 'blog_posts',
             list: '/blog-posts',
