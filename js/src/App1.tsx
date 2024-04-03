@@ -5,7 +5,7 @@ import About from '@/pages/about'
 
 import { Refine } from '@refinedev/core'
 
-import { ErrorComponent, notificationProvider } from '@refinedev/antd'
+import { ErrorComponent, useNotificationProvider } from '@refinedev/antd'
 import '@refinedev/antd/dist/reset.css'
 import routerBindings, {
   DocumentTitleHandler,
@@ -26,13 +26,13 @@ function App() {
           'wc-rest': dataProvider(`${apiUrl}/wp/v2`),
           'wc-store': dataProvider(`${apiUrl}/wp/v2`),
         }}
-        notificationProvider={notificationProvider}
+        notificationProvider={useNotificationProvider}
         routerProvider={routerBindings}
         resources={resources}
         options={{
           syncWithLocation: false,
           warnWhenUnsavedChanges: true,
-          projectId: 'IIIxOo-nIeSnx-oood94',
+          projectId: 'wp-refine-plugin',
         }}
       >
         <Routes>
