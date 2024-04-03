@@ -5,10 +5,10 @@
 
 declare(strict_types=1);
 
-namespace J7\WpReactPlugin\Admin;
+namespace J7\WpRefinePlugin\Admin;
 
-use J7\WpReactPlugin\Utils;
-use J7\WpReactPlugin\Plugin;
+use J7\WpRefinePlugin\Utils;
+use J7\WpRefinePlugin\Plugin;
 
 /**
  * Class CPT

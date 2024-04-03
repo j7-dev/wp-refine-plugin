@@ -5,7 +5,7 @@
 
 declare (strict_types = 1);
 
-namespace J7\WpReactPlugin;
+namespace J7\WpRefinePlugin;
 
 use Kucrut\Vite;
 
