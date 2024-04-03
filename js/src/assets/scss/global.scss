@@ -16,6 +16,11 @@ input[class*="ant-select"] {
 	outline: none !important;
 }
 
+input.ant-input {
+	min-height: unset;
+	line-height: 1.5;
+}
+
 @media print {
 	html,
 	body {

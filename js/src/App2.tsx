@@ -7,7 +7,7 @@ import { Refine } from '@refinedev/core'
 
 import {
   ErrorComponent,
-  notificationProvider,
+  useNotificationProvider,
   ThemedLayoutV2,
   ThemedSiderV2,
 } from '@refinedev/antd'
@@ -18,19 +18,19 @@ import routerBindings, {
 } from '@refinedev/react-router-v6'
 import { dataProvider } from './rest-data-provider'
 import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
-import { apiUrl } from '@/utils'
+import { apiUrl, kebab } from '@/utils'
 
 function App() {
   return (
     <HashRouter>
       <Refine
         dataProvider={{
-          default: dataProvider(`${apiUrl}/wp/v2`),
+          default: dataProvider(`${apiUrl}/${kebab}`),
           'wp-rest': dataProvider(`${apiUrl}/wp/v2`),
-          'wc-rest': dataProvider(`${apiUrl}/wp/v2`),
-          'wc-store': dataProvider(`${apiUrl}/wp/v2`),
+          'wc-rest': dataProvider(`${apiUrl}/wc/v3`),
+          'wc-store': dataProvider(`${apiUrl}/wc/store/v1`),
         }}
-        notificationProvider={notificationProvider}
+        notificationProvider={useNotificationProvider}
         routerProvider={routerBindings}
         resources={[
           {
