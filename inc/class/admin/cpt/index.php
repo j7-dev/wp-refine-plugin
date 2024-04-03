@@ -15,12 +15,14 @@ use J7\WpRefinePlugin\Plugin;
  */
 final class CPT {
 
+	const POST_TYPE = Plugin::KEBAB . '-shortcode'; // my-app-shortcode
+
 	/**
 	 * Post metas
 	 *
 	 * @var array
 	 */
-	public $post_metas = array();
+	public $post_meta_array = array();
 	/**
 	 * Rewrite
 	 *
@@ -34,12 +36,12 @@ final class CPT {
 	 * @param array $args Arguments.
 	 */
 	public function __construct( $args ) {
-		$this->post_metas = $args['post_metas'];
-		$this->rewrite    = $args['rewrite'] ?? array();
+		$this->post_meta_array = $args['post_meta_array'];
+		$this->rewrite         = $args['rewrite'] ?? array();
 
 		\add_action( 'init', array( $this, 'init' ) );
 
-		if ( ! empty( $args['post_metas'] ) ) {
+		if ( ! empty( $args['post_meta_array'] ) ) {
 			\add_action( 'rest_api_init', array( $this, 'add_post_meta' ) );
 		}
 
@@ -60,7 +62,7 @@ final class CPT {
 
 		// add {$this->post_type}/{slug}/test rewrite rule
 		if ( ! empty( $this->rewrite ) ) {
-			\add_rewrite_rule( '^my-app/([^/]+)/' . $this->rewrite['slug'] . '/?$', 'index.php?post_type=my-app&name=$matches[1]&' . $this->rewrite['var'] . '=1', 'top' );
+			\add_rewrite_rule( '^my-app/([^/]+)/' . $this->rewrite['slug'] . '/?$', 'index.php?post_type=' . self::POST_TYPE . '&name=$matches[1]&' . $this->rewrite['var'] . '=1', 'top' );
 			\flush_rewrite_rules();
 		}
 	}
@@ -71,51 +73,51 @@ final class CPT {
 	public static function register_cpt(): void {
 
 		$labels = array(
-			'name'                     => \esc_html__( 'my-app', 'wp_react_plugin' ),
-			'singular_name'            => \esc_html__( 'my-app', 'wp_react_plugin' ),
-			'add_new'                  => \esc_html__( 'Add new', 'wp_react_plugin' ),
-			'add_new_item'             => \esc_html__( 'Add new item', 'wp_react_plugin' ),
-			'edit_item'                => \esc_html__( 'Edit', 'wp_react_plugin' ),
-			'new_item'                 => \esc_html__( 'New', 'wp_react_plugin' ),
-			'view_item'                => \esc_html__( 'View', 'wp_react_plugin' ),
-			'view_items'               => \esc_html__( 'View', 'wp_react_plugin' ),
-			'search_items'             => \esc_html__( 'Search my-app', 'wp_react_plugin' ),
-			'not_found'                => \esc_html__( 'Not Found', 'wp_react_plugin' ),
-			'not_found_in_trash'       => \esc_html__( 'Not found in trash', 'wp_react_plugin' ),
-			'parent_item_colon'        => \esc_html__( 'Parent item', 'wp_react_plugin' ),
-			'all_items'                => \esc_html__( 'All', 'wp_react_plugin' ),
-			'archives'                 => \esc_html__( 'my-app archives', 'wp_react_plugin' ),
-			'attributes'               => \esc_html__( 'my-app attributes', 'wp_react_plugin' ),
-			'insert_into_item'         => \esc_html__( 'Insert to this my-app', 'wp_react_plugin' ),
-			'uploaded_to_this_item'    => \esc_html__( 'Uploaded to this my-app', 'wp_react_plugin' ),
-			'featured_image'           => \esc_html__( 'Featured image', 'wp_react_plugin' ),
-			'set_featured_image'       => \esc_html__( 'Set featured image', 'wp_react_plugin' ),
-			'remove_featured_image'    => \esc_html__( 'Remove featured image', 'wp_react_plugin' ),
-			'use_featured_image'       => \esc_html__( 'Use featured image', 'wp_react_plugin' ),
-			'menu_name'                => \esc_html__( 'my-app', 'wp_react_plugin' ),
-			'filter_items_list'        => \esc_html__( 'Filter my-app list', 'wp_react_plugin' ),
-			'filter_by_date'           => \esc_html__( 'Filter by date', 'wp_react_plugin' ),
-			'items_list_navigation'    => \esc_html__( 'my-app list navigation', 'wp_react_plugin' ),
-			'items_list'               => \esc_html__( 'my-app list', 'wp_react_plugin' ),
-			'item_published'           => \esc_html__( 'my-app published', 'wp_react_plugin' ),
-			'item_published_privately' => \esc_html__( 'my-app published privately', 'wp_react_plugin' ),
-			'item_reverted_to_draft'   => \esc_html__( 'my-app reverted to draft', 'wp_react_plugin' ),
-			'item_scheduled'           => \esc_html__( 'my-app scheduled', 'wp_react_plugin' ),
-			'item_updated'             => \esc_html__( 'my-app updated', 'wp_react_plugin' ),
+			'name'                     => \esc_html__( 'my-app', 'wp_refine_plugin' ),
+			'singular_name'            => \esc_html__( 'my-app', 'wp_refine_plugin' ),
+			'add_new'                  => \esc_html__( 'Add new', 'wp_refine_plugin' ),
+			'add_new_item'             => \esc_html__( 'Add new item', 'wp_refine_plugin' ),
+			'edit_item'                => \esc_html__( 'Edit', 'wp_refine_plugin' ),
+			'new_item'                 => \esc_html__( 'New', 'wp_refine_plugin' ),
+			'view_item'                => \esc_html__( 'View', 'wp_refine_plugin' ),
+			'view_items'               => \esc_html__( 'View', 'wp_refine_plugin' ),
+			'search_items'             => \esc_html__( 'Search my-app', 'wp_refine_plugin' ),
+			'not_found'                => \esc_html__( 'Not Found', 'wp_refine_plugin' ),
+			'not_found_in_trash'       => \esc_html__( 'Not found in trash', 'wp_refine_plugin' ),
+			'parent_item_colon'        => \esc_html__( 'Parent item', 'wp_refine_plugin' ),
+			'all_items'                => \esc_html__( 'All', 'wp_refine_plugin' ),
+			'archives'                 => \esc_html__( 'my-app archives', 'wp_refine_plugin' ),
+			'attributes'               => \esc_html__( 'my-app attributes', 'wp_refine_plugin' ),
+			'insert_into_item'         => \esc_html__( 'Insert to this my-app', 'wp_refine_plugin' ),
+			'uploaded_to_this_item'    => \esc_html__( 'Uploaded to this my-app', 'wp_refine_plugin' ),
+			'featured_image'           => \esc_html__( 'Featured image', 'wp_refine_plugin' ),
+			'set_featured_image'       => \esc_html__( 'Set featured image', 'wp_refine_plugin' ),
+			'remove_featured_image'    => \esc_html__( 'Remove featured image', 'wp_refine_plugin' ),
+			'use_featured_image'       => \esc_html__( 'Use featured image', 'wp_refine_plugin' ),
+			'menu_name'                => \esc_html__( 'my-app', 'wp_refine_plugin' ),
+			'filter_items_list'        => \esc_html__( 'Filter my-app list', 'wp_refine_plugin' ),
+			'filter_by_date'           => \esc_html__( 'Filter by date', 'wp_refine_plugin' ),
+			'items_list_navigation'    => \esc_html__( 'my-app list navigation', 'wp_refine_plugin' ),
+			'items_list'               => \esc_html__( 'my-app list', 'wp_refine_plugin' ),
+			'item_published'           => \esc_html__( 'my-app published', 'wp_refine_plugin' ),
+			'item_published_privately' => \esc_html__( 'my-app published privately', 'wp_refine_plugin' ),
+			'item_reverted_to_draft'   => \esc_html__( 'my-app reverted to draft', 'wp_refine_plugin' ),
+			'item_scheduled'           => \esc_html__( 'my-app scheduled', 'wp_refine_plugin' ),
+			'item_updated'             => \esc_html__( 'my-app updated', 'wp_refine_plugin' ),
 		);
 		$args   = array(
-			'label'                 => \esc_html__( 'my-app', 'wp_react_plugin' ),
+			'label'                 => \esc_html__( 'my-app', 'wp_refine_plugin' ),
 			'labels'                => $labels,
 			'description'           => '',
-			'public'                => true,
+			'public'                => false,
 			'hierarchical'          => false,
 			'exclude_from_search'   => true,
-			'publicly_queryable'    => true,
+			'publicly_queryable'    => false,
 			'show_ui'               => true,
 			'show_in_nav_menus'     => false,
 			'show_in_admin_bar'     => false,
 			'show_in_rest'          => true,
-			'query_var'             => false,
+			'query_var'             => true,
 			'can_export'            => true,
 			'delete_with_user'      => true,
 			'has_archive'           => false,
@@ -124,22 +126,22 @@ final class CPT {
 			'menu_position'         => 6,
 			'menu_icon'             => 'dashicons-store',
 			'capability_type'       => 'post',
-			'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'author' ),
+			'supports'              => array( 'title', 'custom-fields', 'author' ),
 			'taxonomies'            => array(),
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
 			'rewrite'               => array(
-				'with_front' => true,
+				'with_front' => false,
 			),
 		);
 
-		\register_post_type( 'my-app', $args );
+		\register_post_type( self::POST_TYPE, $args );
 	}
 
 	/**
 	 * Register meta fields for post type to show in rest api
 	 */
 	public function add_post_meta(): void {
-		foreach ( $this->post_metas as $meta_key ) {
+		foreach ( $this->post_meta_array as $meta_key ) {
 			\register_meta(
 				'post',
 				Plugin::SNAKE . '_' . $meta_key,
@@ -167,7 +169,7 @@ final class CPT {
 	 * @param string $post_type Post type.
 	 */
 	public function add_metabox( string $post_type ): void {
-		if ( in_array( $post_type, array( Plugin::KEBAB ) ) ) {
+		if ( in_array( $post_type, array( self::POST_TYPE ), true ) ) {
 			\add_meta_box(
 				Plugin::KEBAB . '-metabox',
 				__( 'My App', 'wp_react_plugin' ),
@@ -184,7 +186,7 @@ final class CPT {
 	 */
 	public function render_meta_box(): void {
 		// phpcs:ignore
-		echo '<div id="' . Utils::APP1_SELECTOR . '"></div>';
+		echo '<div id="' . Utils::APP2_SELECTOR . '"></div>';
 	}
 
 
@@ -242,7 +244,7 @@ final class CPT {
 		$post_type = \sanitize_text_field( $_POST['post_type'] ?? '' );
 
 		// Check the user's permissions.
-		if ( 'my-app' !== $post_type ) {
+		if ( self::POST_TYPE !== $post_type ) {
 			return $post_id;
 		}
 
@@ -279,7 +281,7 @@ final class CPT {
 
 new CPT(
 	array(
-		'post_metas' => array( 'meta', 'settings' ),
+		'post_meta_array' => array( 'meta', 'settings' ),
 		'rewrite'    => array(
 			'template_path' => 'test.php',
 			'slug'          => 'test',
