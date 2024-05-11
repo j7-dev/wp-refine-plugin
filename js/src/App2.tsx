@@ -61,7 +61,7 @@ function App() {
         }}
       >
         <Routes>
-          <Route
+          {/* <Route
             element={
               <ThemedLayoutV2
                 Sider={(props) => <ThemedSiderV2 {...props} fixed />}
@@ -69,10 +69,10 @@ function App() {
                 <Outlet />
               </ThemedLayoutV2>
             }
-          >
+          ></Route> */}
+          <Route element={<Outlet />}>
             <Route index element={<DefaultPage />} />
             <Route path="/about" element={<About />} />
-
             <Route path="*" element={<ErrorComponent />} />
           </Route>
         </Routes>

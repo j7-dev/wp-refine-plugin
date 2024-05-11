@@ -78,3 +78,7 @@ export function removeTrailingSlash(str: string) {
 
   return str
 }
+
+export const getIsVariation = (type: string) => {
+  return ['variation', 'subscription_variation'].includes(type)
+}

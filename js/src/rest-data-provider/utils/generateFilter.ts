@@ -1,6 +1,16 @@
 import { CrudFilters } from '@refinedev/core'
 import { mapOperator } from './mapOperator'
 
+/*
+[
+	{
+			"field": "name",
+			"operator": "contains",
+			"value": "111"
+	}
+]
+*/
+
 export const generateFilter = (filters?: CrudFilters) => {
   const queryFilters: { [key: string]: string } = {}
 
@@ -13,15 +23,8 @@ export const generateFilter = (filters?: CrudFilters) => {
       }
 
       if ('field' in filter) {
-        const { field, operator, value } = filter
-
-        if (field === 'q') {
-          queryFilters[field] = value
-          return
-        }
-
-        const mappedOperator = mapOperator(operator)
-        queryFilters[`${field}${mappedOperator}`] = value
+        const { formattedField, formattedValue } = mapOperator(filter)
+        queryFilters[formattedField] = formattedValue
       }
     })
   }

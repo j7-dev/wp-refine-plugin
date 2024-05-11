@@ -185,7 +185,7 @@ final class CPT extends Singleton {
 	 */
 	public function render_meta_box(): void {
 		// phpcs:ignore
-		echo '<div id="' . Base::APP2_SELECTOR . '"></div>';
+		echo '<div id="' . Base::APP2_SELECTOR . '" class="relative"></div>';
 	}
 
 

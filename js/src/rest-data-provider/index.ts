@@ -2,11 +2,9 @@ import { DataProvider } from '@refinedev/core'
 import { axiosInstance, generateSort, generateFilter } from './utils'
 import { AxiosInstance } from 'axios'
 import queryString from 'query-string'
+import { TOrderBy, TOrder, THttpMethods, THttpMethodsWithBody } from '@/types'
 
 export * from './utils'
-
-type MethodTypes = 'get' | 'delete' | 'head' | 'options'
-type MethodTypesWithBody = 'post' | 'put' | 'patch'
 
 const { stringify } = queryString
 
@@ -18,25 +16,28 @@ export const dataProvider = (
   'createMany' | 'updateMany' | 'deleteMany'
 > => ({
   getList: async ({ resource, pagination, filters, sorters, meta }) => {
+    // TODO
+
+    console.log('⭐  filters:', filters)
     const url = `${apiUrl}/${resource}`
 
     const { current = 1, pageSize = 10, mode = 'server' } = pagination ?? {}
 
     const { headers: headersFromMeta, method } = meta ?? {}
-    const requestMethod = (method as MethodTypes) ?? 'get'
+    const requestMethod = (method as THttpMethods) ?? 'get'
 
     const queryFilters = generateFilter(filters)
 
     const query: {
-      query?: number
-      per_page?: number
-      orderby?: string
-      order?: string
+      page?: number
+      posts_per_page?: number
+      orderby?: TOrderBy
+      order?: TOrder
     } = {}
 
     if (mode === 'server') {
-      query.query = current
-      query.per_page = pageSize
+      query.page = current
+      query.posts_per_page = pageSize
     }
 
     const generatedSort = generateSort(sorters)
@@ -47,23 +48,23 @@ export const dataProvider = (
     }
 
     const { data, headers } = await httpClient[requestMethod](
-      `${url}?${stringify(query)}&${stringify(queryFilters)}`,
+      `${url}?${stringify(query)}&${stringify(queryFilters, { arrayFormat: 'bracket' })}`,
       {
         headers: headersFromMeta,
       },
     )
 
-    const total = +headers['x-total-count']
+    const total = headers?.['x-wp-total'] || data.length
 
     return {
       data,
-      total: total || data.length,
+      total,
     }
   },
 
   getMany: async ({ resource, ids, meta }) => {
     const { headers, method } = meta ?? {}
-    const requestMethod = (method as MethodTypes) ?? 'get'
+    const requestMethod = (method as THttpMethods) ?? 'get'
 
     const { data } = await httpClient[requestMethod](
       `${apiUrl}/${resource}?${stringify({ id: ids })}`,
@@ -79,7 +80,7 @@ export const dataProvider = (
     const url = `${apiUrl}/${resource}`
 
     const { headers, method } = meta ?? {}
-    const requestMethod = (method as MethodTypesWithBody) ?? 'post'
+    const requestMethod = (method as THttpMethodsWithBody) ?? 'post'
 
     const { data } = await httpClient[requestMethod](url, variables, {
       headers,
@@ -94,7 +95,7 @@ export const dataProvider = (
     const url = `${apiUrl}/${resource}/${id}`
 
     const { headers, method } = meta ?? {}
-    const requestMethod = (method as MethodTypesWithBody) ?? 'patch'
+    const requestMethod = (method as THttpMethodsWithBody) ?? 'patch'
 
     const { data } = await httpClient[requestMethod](url, variables, {
       headers,
@@ -109,7 +110,7 @@ export const dataProvider = (
     const url = `${apiUrl}/${resource}/${id}`
 
     const { headers, method } = meta ?? {}
-    const requestMethod = (method as MethodTypes) ?? 'get'
+    const requestMethod = (method as THttpMethods) ?? 'get'
 
     const { data } = await httpClient[requestMethod](url, { headers })
 
@@ -122,7 +123,7 @@ export const dataProvider = (
     const url = `${apiUrl}/${resource}/${id}`
 
     const { headers, method } = meta ?? {}
-    const requestMethod = (method as MethodTypesWithBody) ?? 'delete'
+    const requestMethod = (method as THttpMethodsWithBody) ?? 'delete'
 
     const { data } = await httpClient[requestMethod](url, {
       data: variables,
