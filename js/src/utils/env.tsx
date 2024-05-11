@@ -3,13 +3,14 @@
 
 import { removeTrailingSlash } from '@/utils'
 
-const APP_DOMAIN = 'my_app_data' as string
-export const snake = window?.[APP_DOMAIN]?.env?.SNAKE || 'my_app'
-export const appName = window?.[APP_DOMAIN]?.env?.APP_NAME || 'My App'
-export const kebab = window?.[APP_DOMAIN]?.env?.KEBAB || 'my-app'
-export const app1Selector = window?.[APP_DOMAIN]?.env?.APP1_SELECTOR || 'my_app'
+const APP_DOMAIN = 'my_refine_app_data' as string
+export const snake = window?.[APP_DOMAIN]?.env?.SNAKE || 'my_refine_app'
+export const appName = window?.[APP_DOMAIN]?.env?.APP_NAME || 'My Refine App'
+export const kebab = window?.[APP_DOMAIN]?.env?.KEBAB || 'my-refine-app'
+export const app1Selector =
+  window?.[APP_DOMAIN]?.env?.APP1_SELECTOR || 'my_refine_app'
 export const app2Selector =
-  window?.[APP_DOMAIN]?.env?.APP2_SELECTOR || 'my_app_metabox'
+  window?.[APP_DOMAIN]?.env?.APP2_SELECTOR || 'my_refine_app_metabox'
 export const apiUrl =
   removeTrailingSlash(window?.wpApiSettings?.root) || '/wp-json'
 export const ajaxUrl =

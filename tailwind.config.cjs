@@ -5,7 +5,7 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
-  content: ['./js/src/**/*.{js,ts,jsx,tsx}'],
+  content: ['./js/src/**/*.{js,ts,jsx,tsx}', './inc/**/*.php'],
   theme: {
     extend: {
       colors: {

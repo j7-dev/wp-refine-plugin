@@ -1,5 +1,5 @@
+import React from 'react'
 import { useList, useMany } from '@refinedev/core'
-import { renderHTML } from '@/utils'
 import defaultImage from '@/assets/images/defaultImage.jpg'
 import { TPost, TImage } from '@/types/wpRestApi'
 
@@ -78,6 +78,12 @@ const GetPostsPage = () => {
       )}
     </>
   )
+}
+
+function renderHTML(HTMLstring: string) {
+  return React.createElement('div', {
+    dangerouslySetInnerHTML: { __html: HTMLstring },
+  })
 }
 
 export default GetPostsPage

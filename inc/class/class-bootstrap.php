@@ -7,23 +7,49 @@ declare (strict_types = 1);
 
 namespace J7\WpRefinePlugin;
 
+use Micropackage\Singleton\Singleton;
+use J7\WpRefinePlugin\Utils\Base;
 use Kucrut\Vite;
 
 /**
  * Class Bootstrap
  */
-final class Bootstrap {
+final class Bootstrap extends Singleton {
 
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
+		require_once __DIR__ . '/utils/index.php';
 		require_once __DIR__ . '/admin/index.php';
 		require_once __DIR__ . '/front-end/index.php';
 
-		\add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script' ), 99 );
-		\add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_script' ), 99 );
+		\add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_script' ), 99 );
+		\add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue_script' ), 99 );
+	}
+
+	/**
+	 * Admin Enqueue script
+	 * You can load the script on demand
+	 *
+	 * @param string $hook current page hook
+	 *
+	 * @return void
+	 */
+	public function admin_enqueue_script( $hook ): void {
+		$this->enqueue_script();
+	}
+
+
+	/**
+	 * Front-end Enqueue script
+	 * You can load the script on demand
+	 *
+	 * @return void
+	 */
+	public function frontend_enqueue_script(): void {
+		$this->enqueue_script();
 	}
 
 	/**
@@ -33,17 +59,6 @@ final class Bootstrap {
 	 * @return void
 	 */
 	public function enqueue_script(): void {
-		/*
-		* enquene script on demand
-		if (\is_admin()) {
-		// match wp-admin screen_id
-		$screen = \get_current_screen();
-		if (($screen->id !== Plugin::KEBAB)) return;
-		} else {
-		// match front-end post_type slug {Plugin::KEBAB}
-		if (strpos($_SERVER['REQUEST_URI'], Plugin::KEBAB) === false) return;
-		}
-		*/
 
 		Vite\enqueue_asset(
 			Plugin::$dir . '/js/dist',
@@ -62,18 +77,18 @@ final class Bootstrap {
 			Plugin::SNAKE . '_data',
 			array(
 				'env' => array(
-					'siteUrl'       => \site_url(),
-					'ajaxUrl'       => \admin_url( 'admin-ajax.php' ),
+					'siteUrl'       => \untrailingslashit( \site_url() ),
+					'ajaxUrl'       => \untrailingslashit( \admin_url( 'admin-ajax.php' ) ),
 					'userId'        => \wp_get_current_user()->data->ID ?? null,
 					'postId'        => $post_id,
-					'permalink'     => $permalink,
+					'permalink'     => \untrailingslashit( $permalink ),
 					'APP_NAME'      => Plugin::APP_NAME,
 					'KEBAB'         => Plugin::KEBAB,
 					'SNAKE'         => Plugin::SNAKE,
-					'BASE_URL'      => Utils::BASE_URL,
-					'APP1_SELECTOR' => '#' . Utils::APP1_SELECTOR,
-					'APP2_SELECTOR' => '#' . Utils::APP2_SELECTOR,
-					'API_TIMEOUT'   => Utils::API_TIMEOUT,
+					'BASE_URL'      => Base::BASE_URL,
+					'APP1_SELECTOR' => '#' . Base::APP1_SELECTOR,
+					'APP2_SELECTOR' => '#' . Base::APP2_SELECTOR,
+					'API_TIMEOUT'   => Base::API_TIMEOUT,
 					'nonce'         => \wp_create_nonce( Plugin::KEBAB ),
 				),
 			)

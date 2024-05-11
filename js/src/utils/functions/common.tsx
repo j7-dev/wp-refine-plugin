@@ -4,9 +4,6 @@ export const windowOuterWidth = window?.outerWidth || 1200
 
 export const isIphone = /iPhone/.test(navigator.userAgent)
 
-export const renderHTML = (rawHTML: string) =>
-  React.createElement('div', { dangerouslySetInnerHTML: { __html: rawHTML } })
-
 export const handleClearZero = (e: React.MouseEvent<HTMLInputElement>) => {
   const target = e.target as HTMLInputElement
   if (target.value === '0') {

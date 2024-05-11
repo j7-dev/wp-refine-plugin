@@ -12,7 +12,7 @@
 
 <body <?php body_class(); ?> style="background-color:#fff;">
 
-	<div id="my_app"></div>
+	<div id="my_refine_app"></div>
 
 	<?php wp_footer(); ?>
 </body>

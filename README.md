@@ -61,15 +61,15 @@ Tech stacks (knowledge you need to have)
 3. Change the API url to your project in `.env.development`
 
    ```sh
-   APP_NAME='My App'
+   APP_NAME='My Refine App'
    # ↑ Your App's Name
 
-   APP1_SELECTOR='my-app'
-   # by default, the footer will render a <div id="my-app"></div> container at front-end page footer
+   APP1_SELECTOR='my-refine-app'
+   # by default, the footer will render a <div id="my-refine-app"></div> container at front-end page footer
    # You can custom the render id
 
-	 APP2_SELECTOR='my-app-metabox'
-   # by default, in admin page, when you want to add/edit a new post with post_type=my-app, another React App will render in metabox
+	 APP2_SELECTOR='my-refine-app-metabox'
+   # by default, in admin page, when you want to add/edit a new post with post_type=my-refine-app, another React App will render in metabox
 	 # Remove it if you don't need a metabox React App
 
    VITE_API_TIMEOUT='30000'
@@ -88,7 +88,7 @@ Tech stacks (knowledge you need to have)
    <img src="https://user-images.githubusercontent.com/9213776/226081923-c16cf62f-cd6e-4457-9150-8973b817a6e3.png">
 
 
-7. Check the admin page, you will see a new post type `My App` and a new menu `My App`
+7. Check the admin page, you will see a new post type `My Refine App` and a new menu `My Refine App`
 
    <img src="https://github.com/j7-dev/wp-refine-plugin/assets/9213776/b2588014-271a-4620-ab94-d65b2d7a211b">
 

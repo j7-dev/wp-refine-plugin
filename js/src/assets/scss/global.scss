@@ -10,15 +10,19 @@
 body {
 	margin: 0 !important;
 }
-input[class*="ant-select"] {
-	box-shadow: none !important;
-	border: none !important;
-	outline: none !important;
-}
 
-input.ant-input {
-	min-height: unset;
-	line-height: 1.5;
+div[class^="ant-"] {
+	input[class*="ant-select"] {
+		box-shadow: none !important;
+		border: none !important;
+		outline: none !important;
+	}
+
+	input[class*="ant-input"],
+	input.ant-select-selection-search-input {
+		min-height: unset;
+		line-height: 1.5;
+	}
 }
 
 @media print {

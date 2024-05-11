@@ -1,28 +1,27 @@
 <?php
 /**
- * Custom Post Type: My App
+ * Custom Post Type: My Refine App
  */
 
 declare(strict_types=1);
 
 namespace J7\WpRefinePlugin\Admin;
 
-use J7\WpRefinePlugin\Utils;
+use Micropackage\Singleton\Singleton;
+use J7\WpRefinePlugin\Utils\Base;
 use J7\WpRefinePlugin\Plugin;
 
 /**
  * Class CPT
  */
-final class CPT {
-
-	const POST_TYPE = Plugin::KEBAB . '-shortcode'; // my-app-shortcode
+final class CPT extends Singleton {
 
 	/**
 	 * Post metas
 	 *
 	 * @var array
 	 */
-	public $post_meta_array = array();
+	public $post_metas = array();
 	/**
 	 * Rewrite
 	 *
@@ -36,12 +35,12 @@ final class CPT {
 	 * @param array $args Arguments.
 	 */
 	public function __construct( $args ) {
-		$this->post_meta_array = $args['post_meta_array'];
-		$this->rewrite         = $args['rewrite'] ?? array();
+		$this->post_metas = $args['post_metas'];
+		$this->rewrite    = $args['rewrite'] ?? array();
 
 		\add_action( 'init', array( $this, 'init' ) );
 
-		if ( ! empty( $args['post_meta_array'] ) ) {
+		if ( ! empty( $args['post_metas'] ) ) {
 			\add_action( 'rest_api_init', array( $this, 'add_post_meta' ) );
 		}
 
@@ -62,62 +61,62 @@ final class CPT {
 
 		// add {$this->post_type}/{slug}/test rewrite rule
 		if ( ! empty( $this->rewrite ) ) {
-			\add_rewrite_rule( '^my-app/([^/]+)/' . $this->rewrite['slug'] . '/?$', 'index.php?post_type=' . self::POST_TYPE . '&name=$matches[1]&' . $this->rewrite['var'] . '=1', 'top' );
+			\add_rewrite_rule( '^my-refine-app/([^/]+)/' . $this->rewrite['slug'] . '/?$', 'index.php?post_type=my-refine-app&name=$matches[1]&' . $this->rewrite['var'] . '=1', 'top' );
 			\flush_rewrite_rules();
 		}
 	}
 
 	/**
-	 * Register my-app custom post type
+	 * Register my-refine-app custom post type
 	 */
 	public static function register_cpt(): void {
 
 		$labels = array(
-			'name'                     => \esc_html__( 'my-app', 'wp_refine_plugin' ),
-			'singular_name'            => \esc_html__( 'my-app', 'wp_refine_plugin' ),
+			'name'                     => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
+			'singular_name'            => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
 			'add_new'                  => \esc_html__( 'Add new', 'wp_refine_plugin' ),
 			'add_new_item'             => \esc_html__( 'Add new item', 'wp_refine_plugin' ),
 			'edit_item'                => \esc_html__( 'Edit', 'wp_refine_plugin' ),
 			'new_item'                 => \esc_html__( 'New', 'wp_refine_plugin' ),
 			'view_item'                => \esc_html__( 'View', 'wp_refine_plugin' ),
 			'view_items'               => \esc_html__( 'View', 'wp_refine_plugin' ),
-			'search_items'             => \esc_html__( 'Search my-app', 'wp_refine_plugin' ),
+			'search_items'             => \esc_html__( 'Search my-refine-app', 'wp_refine_plugin' ),
 			'not_found'                => \esc_html__( 'Not Found', 'wp_refine_plugin' ),
 			'not_found_in_trash'       => \esc_html__( 'Not found in trash', 'wp_refine_plugin' ),
 			'parent_item_colon'        => \esc_html__( 'Parent item', 'wp_refine_plugin' ),
 			'all_items'                => \esc_html__( 'All', 'wp_refine_plugin' ),
-			'archives'                 => \esc_html__( 'my-app archives', 'wp_refine_plugin' ),
-			'attributes'               => \esc_html__( 'my-app attributes', 'wp_refine_plugin' ),
-			'insert_into_item'         => \esc_html__( 'Insert to this my-app', 'wp_refine_plugin' ),
-			'uploaded_to_this_item'    => \esc_html__( 'Uploaded to this my-app', 'wp_refine_plugin' ),
+			'archives'                 => \esc_html__( 'my-refine-app archives', 'wp_refine_plugin' ),
+			'attributes'               => \esc_html__( 'my-refine-app attributes', 'wp_refine_plugin' ),
+			'insert_into_item'         => \esc_html__( 'Insert to this my-refine-app', 'wp_refine_plugin' ),
+			'uploaded_to_this_item'    => \esc_html__( 'Uploaded to this my-refine-app', 'wp_refine_plugin' ),
 			'featured_image'           => \esc_html__( 'Featured image', 'wp_refine_plugin' ),
 			'set_featured_image'       => \esc_html__( 'Set featured image', 'wp_refine_plugin' ),
 			'remove_featured_image'    => \esc_html__( 'Remove featured image', 'wp_refine_plugin' ),
 			'use_featured_image'       => \esc_html__( 'Use featured image', 'wp_refine_plugin' ),
-			'menu_name'                => \esc_html__( 'my-app', 'wp_refine_plugin' ),
-			'filter_items_list'        => \esc_html__( 'Filter my-app list', 'wp_refine_plugin' ),
+			'menu_name'                => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
+			'filter_items_list'        => \esc_html__( 'Filter my-refine-app list', 'wp_refine_plugin' ),
 			'filter_by_date'           => \esc_html__( 'Filter by date', 'wp_refine_plugin' ),
-			'items_list_navigation'    => \esc_html__( 'my-app list navigation', 'wp_refine_plugin' ),
-			'items_list'               => \esc_html__( 'my-app list', 'wp_refine_plugin' ),
-			'item_published'           => \esc_html__( 'my-app published', 'wp_refine_plugin' ),
-			'item_published_privately' => \esc_html__( 'my-app published privately', 'wp_refine_plugin' ),
-			'item_reverted_to_draft'   => \esc_html__( 'my-app reverted to draft', 'wp_refine_plugin' ),
-			'item_scheduled'           => \esc_html__( 'my-app scheduled', 'wp_refine_plugin' ),
-			'item_updated'             => \esc_html__( 'my-app updated', 'wp_refine_plugin' ),
+			'items_list_navigation'    => \esc_html__( 'my-refine-app list navigation', 'wp_refine_plugin' ),
+			'items_list'               => \esc_html__( 'my-refine-app list', 'wp_refine_plugin' ),
+			'item_published'           => \esc_html__( 'my-refine-app published', 'wp_refine_plugin' ),
+			'item_published_privately' => \esc_html__( 'my-refine-app published privately', 'wp_refine_plugin' ),
+			'item_reverted_to_draft'   => \esc_html__( 'my-refine-app reverted to draft', 'wp_refine_plugin' ),
+			'item_scheduled'           => \esc_html__( 'my-refine-app scheduled', 'wp_refine_plugin' ),
+			'item_updated'             => \esc_html__( 'my-refine-app updated', 'wp_refine_plugin' ),
 		);
 		$args   = array(
-			'label'                 => \esc_html__( 'my-app', 'wp_refine_plugin' ),
+			'label'                 => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
 			'labels'                => $labels,
 			'description'           => '',
-			'public'                => false,
+			'public'                => true,
 			'hierarchical'          => false,
 			'exclude_from_search'   => true,
-			'publicly_queryable'    => false,
+			'publicly_queryable'    => true,
 			'show_ui'               => true,
 			'show_in_nav_menus'     => false,
 			'show_in_admin_bar'     => false,
 			'show_in_rest'          => true,
-			'query_var'             => true,
+			'query_var'             => false,
 			'can_export'            => true,
 			'delete_with_user'      => true,
 			'has_archive'           => false,
@@ -126,22 +125,22 @@ final class CPT {
 			'menu_position'         => 6,
 			'menu_icon'             => 'dashicons-store',
 			'capability_type'       => 'post',
-			'supports'              => array( 'title', 'custom-fields', 'author' ),
+			'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'author' ),
 			'taxonomies'            => array(),
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
 			'rewrite'               => array(
-				'with_front' => false,
+				'with_front' => true,
 			),
 		);
 
-		\register_post_type( self::POST_TYPE, $args );
+		\register_post_type( 'my-refine-app', $args );
 	}
 
 	/**
 	 * Register meta fields for post type to show in rest api
 	 */
 	public function add_post_meta(): void {
-		foreach ( $this->post_meta_array as $meta_key ) {
+		foreach ( $this->post_metas as $meta_key ) {
 			\register_meta(
 				'post',
 				Plugin::SNAKE . '_' . $meta_key,
@@ -169,10 +168,10 @@ final class CPT {
 	 * @param string $post_type Post type.
 	 */
 	public function add_metabox( string $post_type ): void {
-		if ( in_array( $post_type, array( self::POST_TYPE ), true ) ) {
+		if ( in_array( $post_type, array( Plugin::KEBAB ) ) ) {
 			\add_meta_box(
 				Plugin::KEBAB . '-metabox',
-				__( 'My App', 'wp_react_plugin' ),
+				__( 'My Refine App', 'wp_refine_plugin' ),
 				array( $this, 'render_meta_box' ),
 				$post_type,
 				'advanced',
@@ -186,7 +185,7 @@ final class CPT {
 	 */
 	public function render_meta_box(): void {
 		// phpcs:ignore
-		echo '<div id="' . Utils::APP2_SELECTOR . '"></div>';
+		echo '<div id="' . Base::APP2_SELECTOR . '"></div>';
 	}
 
 
@@ -244,7 +243,7 @@ final class CPT {
 		$post_type = \sanitize_text_field( $_POST['post_type'] ?? '' );
 
 		// Check the user's permissions.
-		if ( self::POST_TYPE !== $post_type ) {
+		if ( 'my-refine-app' !== $post_type ) {
 			return $post_id;
 		}
 
@@ -279,9 +278,9 @@ final class CPT {
 	}
 }
 
-new CPT(
+CPT::get(
 	array(
-		'post_meta_array' => array( 'meta', 'settings' ),
+		'post_metas' => array( 'meta', 'settings' ),
 		'rewrite'    => array(
 			'template_path' => 'test.php',
 			'slug'          => 'test',
