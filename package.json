@@ -1,6 +1,6 @@
 {
-  "name": "create-",
-  "private": true,
+  "name": "create-wp-refine-plugin",
+  "private": false,
   "version": "3.0.1",
   "type": "module",
   "scripts": {
