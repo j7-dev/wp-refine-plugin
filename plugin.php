@@ -21,7 +21,7 @@ namespace J7\WpRefinePlugin;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 use Micropackage\Singleton\Singleton;
-use TGM_Plugin_Activation;
+use J7_Required_Plugins;
 
 if ( ! \class_exists( 'J7\WpRefinePlugin\Plugin' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
@@ -99,9 +99,9 @@ if ( ! \class_exists( 'J7\WpRefinePlugin\Plugin' ) ) {
 
 			\register_activation_hook( __FILE__, array( $this, 'activate' ) );
 			\register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-			\add_action( 'tgmpa_register', array( $this, 'register_required_plugins' ) );
 			\add_action( 'plugins_loaded', array( $this, 'check_required_plugins' ) );
 
+			$this->register_required_plugins();
 			$this->set_puc_pat();
 			$this->plugin_update_checker();
 		}
@@ -112,10 +112,10 @@ if ( ! \class_exists( 'J7\WpRefinePlugin\Plugin' ) ) {
 		 * @return void
 		 */
 		public function check_required_plugins() {
-			$instance          = TGM_Plugin_Activation::get_instance();
-			$is_tgmpa_complete = $instance->is_tgmpa_complete();
+			$instance         = \J7_Required_Plugins::get_instance( self::KEBAB );
+			$is_j7rp_complete = $instance->is_j7rp_complete();
 
-			if ( $is_tgmpa_complete ) {
+			if ( $is_j7rp_complete ) {
 				self::$dir = \untrailingslashit( \wp_normalize_path( \plugin_dir_path( __FILE__ ) ) );
 				self::$url = \untrailingslashit( \plugin_dir_url( __FILE__ ) );
 				if ( ! \function_exists( 'get_plugin_data' ) ) {
@@ -247,7 +247,7 @@ if ( ! \class_exists( 'J7\WpRefinePlugin\Plugin' ) ) {
 				),
 			);
 
-			\tgmpa($this->required_plugins, $config );
+			\j7rp($this->required_plugins, $config );
 		 }
 
 
