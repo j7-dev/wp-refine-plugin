@@ -7,14 +7,14 @@ declare (strict_types = 1);
 
 namespace J7\WpRefinePlugin;
 
-use Micropackage\Singleton\Singleton;
 use J7\WpRefinePlugin\Utils\Base;
 use Kucrut\Vite;
 
 /**
  * Class Bootstrap
  */
-final class Bootstrap extends Singleton {
+final class Bootstrap {
+	use \J7\WpUtils\Traits\SingletonTrait;
 
 
 	/**
@@ -25,8 +25,8 @@ final class Bootstrap extends Singleton {
 		require_once __DIR__ . '/admin/index.php';
 		require_once __DIR__ . '/front-end/index.php';
 
-		\add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_script' ), 99 );
-		\add_action( 'wp_enqueue_scripts', array( $this, 'frontend_enqueue_script' ), 99 );
+		\add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_script' ], 99 );
+		\add_action( 'wp_enqueue_scripts', [ $this, 'frontend_enqueue_script' ], 99 );
 	}
 
 	/**
@@ -63,44 +63,44 @@ final class Bootstrap extends Singleton {
 		Vite\enqueue_asset(
 			Plugin::$dir . '/js/dist',
 			'js/src/main.tsx',
-			array(
-				'handle'    => Plugin::KEBAB,
+			[
+				'handle'    => Plugin::$kebab,
 				'in-footer' => true,
-			)
+			]
 		);
 
 		$post_id   = \get_the_ID();
 		$permalink = \get_permalink( $post_id );
 
 		\wp_localize_script(
-			Plugin::KEBAB,
-			Plugin::SNAKE . '_data',
-			array(
-				'env' => array(
+			Plugin::$kebab,
+			Plugin::$snake . '_data',
+			[
+				'env' => [
 					'siteUrl'       => \untrailingslashit( \site_url() ),
 					'ajaxUrl'       => \untrailingslashit( \admin_url( 'admin-ajax.php' ) ),
 					'userId'        => \wp_get_current_user()->data->ID ?? null,
 					'postId'        => $post_id,
 					'permalink'     => \untrailingslashit( $permalink ),
-					'APP_NAME'      => Plugin::APP_NAME,
-					'KEBAB'         => Plugin::KEBAB,
-					'SNAKE'         => Plugin::SNAKE,
+					'APP_NAME'      => Plugin::$app_name,
+					'KEBAB'         => Plugin::$kebab,
+					'SNAKE'         => Plugin::$snake,
 					'BASE_URL'      => Base::BASE_URL,
 					'APP1_SELECTOR' => Base::APP1_SELECTOR,
 					'APP2_SELECTOR' => Base::APP2_SELECTOR,
 					'API_TIMEOUT'   => Base::API_TIMEOUT,
-					'nonce'         => \wp_create_nonce( Plugin::KEBAB ),
-				),
-			)
+					'nonce'         => \wp_create_nonce( Plugin::$kebab ),
+				],
+			]
 		);
 
 		\wp_localize_script(
-			Plugin::KEBAB,
+			Plugin::$kebab,
 			'wpApiSettings',
-			array(
+			[
 				'root'  => \untrailingslashit( \esc_url_raw( rest_url() ) ),
 				'nonce' => \wp_create_nonce( 'wp_rest' ),
-			)
+			]
 		);
 	}
 }

@@ -7,49 +7,58 @@ declare(strict_types=1);
 
 namespace J7\WpRefinePlugin\Admin;
 
-use Micropackage\Singleton\Singleton;
 use J7\WpRefinePlugin\Utils\Base;
 use J7\WpRefinePlugin\Plugin;
 
 /**
  * Class CPT
  */
-final class CPT extends Singleton {
+final class CPT {
+	use \J7\WpUtils\Traits\SingletonTrait;
 
 	/**
 	 * Post metas
 	 *
 	 * @var array
 	 */
-	public $post_metas = array();
+	public $post_meta_array = [];
 	/**
 	 * Rewrite
 	 *
 	 * @var array
 	 */
-	public $rewrite = array();
+	public $rewrite = [];
 
 	/**
 	 * Constructor
 	 *
 	 * @param array $args Arguments.
 	 */
-	public function __construct( $args ) {
-		$this->post_metas = $args['post_metas'];
-		$this->rewrite    = $args['rewrite'] ?? array();
+	public function __construct() {
+		$args = [
+			'post_meta_array' => [ 'meta', 'settings' ],
+			'rewrite'         => [
+				'template_path' => 'test.php',
+				'slug'          => 'test',
+				'var'           => Plugin::$snake . '_test',
+			],
+		];
 
-		\add_action( 'init', array( $this, 'init' ) );
+		$this->post_meta_array = $args['post_meta_array'];
+		$this->rewrite         = $args['rewrite'] ?? [];
 
-		if ( ! empty( $args['post_metas'] ) ) {
-			\add_action( 'rest_api_init', array( $this, 'add_post_meta' ) );
+		\add_action( 'init', [ $this, 'init' ] );
+
+		if ( ! empty( $args['post_meta_array'] ) ) {
+			\add_action( 'rest_api_init', [ $this, 'add_post_meta' ] );
 		}
 
-		\add_action( 'load-post.php', array( $this, 'init_metabox' ) );
-		\add_action( 'load-post-new.php', array( $this, 'init_metabox' ) );
+		\add_action( 'load-post.php', [ $this, 'init_metabox' ] );
+		\add_action( 'load-post-new.php', [ $this, 'init_metabox' ] );
 
 		if ( ! empty( $args['rewrite'] ) ) {
-			\add_filter( 'query_vars', array( $this, 'add_query_var' ) );
-			\add_filter( 'template_include', array( $this, 'load_custom_template' ), 99 );
+			\add_filter( 'query_vars', [ $this, 'add_query_var' ] );
+			\add_filter( 'template_include', [ $this, 'load_custom_template' ], 99 );
 		}
 	}
 
@@ -71,7 +80,7 @@ final class CPT extends Singleton {
 	 */
 	public static function register_cpt(): void {
 
-		$labels = array(
+		$labels = [
 			'name'                     => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
 			'singular_name'            => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
 			'add_new'                  => \esc_html__( 'Add new', 'wp_refine_plugin' ),
@@ -103,8 +112,8 @@ final class CPT extends Singleton {
 			'item_reverted_to_draft'   => \esc_html__( 'my-refine-app reverted to draft', 'wp_refine_plugin' ),
 			'item_scheduled'           => \esc_html__( 'my-refine-app scheduled', 'wp_refine_plugin' ),
 			'item_updated'             => \esc_html__( 'my-refine-app updated', 'wp_refine_plugin' ),
-		);
-		$args   = array(
+		];
+		$args   = [
 			'label'                 => \esc_html__( 'my-refine-app', 'wp_refine_plugin' ),
 			'labels'                => $labels,
 			'description'           => '',
@@ -125,13 +134,13 @@ final class CPT extends Singleton {
 			'menu_position'         => 6,
 			'menu_icon'             => 'dashicons-store',
 			'capability_type'       => 'post',
-			'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'author' ),
-			'taxonomies'            => array(),
+			'supports'              => [ 'title', 'editor', 'thumbnail', 'custom-fields', 'author' ],
+			'taxonomies'            => [],
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
-			'rewrite'               => array(
+			'rewrite'               => [
 				'with_front' => true,
-			),
-		);
+			],
+		];
 
 		\register_post_type( 'my-refine-app', $args );
 	}
@@ -140,15 +149,15 @@ final class CPT extends Singleton {
 	 * Register meta fields for post type to show in rest api
 	 */
 	public function add_post_meta(): void {
-		foreach ( $this->post_metas as $meta_key ) {
+		foreach ( $this->post_meta_array as $meta_key ) {
 			\register_meta(
 				'post',
-				Plugin::SNAKE . '_' . $meta_key,
-				array(
+				Plugin::$snake . '_' . $meta_key,
+				[
 					'type'         => 'string',
 					'show_in_rest' => true,
 					'single'       => true,
-				)
+				]
 			);
 		}
 	}
@@ -157,9 +166,9 @@ final class CPT extends Singleton {
 	 * Meta box initialization.
 	 */
 	public function init_metabox(): void {
-		\add_action( 'add_meta_boxes', array( $this, 'add_metabox' ) );
-		\add_action( 'save_post', array( $this, 'save_metabox' ), 10, 2 );
-		\add_filter( 'rewrite_rules_array', array( $this, 'custom_post_type_rewrite_rules' ) );
+		\add_action( 'add_meta_boxes', [ $this, 'add_metabox' ] );
+		\add_action( 'save_post', [ $this, 'save_metabox' ], 10, 2 );
+		\add_filter( 'rewrite_rules_array', [ $this, 'custom_post_type_rewrite_rules' ] );
 	}
 
 	/**
@@ -168,11 +177,11 @@ final class CPT extends Singleton {
 	 * @param string $post_type Post type.
 	 */
 	public function add_metabox( string $post_type ): void {
-		if ( in_array( $post_type, array( Plugin::KEBAB ) ) ) {
+		if ( in_array( $post_type, [ Plugin::$kebab ] ) ) {
 			\add_meta_box(
-				Plugin::KEBAB . '-metabox',
+				Plugin::$kebab . '-metabox',
 				__( 'My Refine App', 'wp_refine_plugin' ),
-				array( $this, 'render_meta_box' ),
+				[ $this, 'render_meta_box' ],
 				$post_type,
 				'advanced',
 				'high'
@@ -185,7 +194,7 @@ final class CPT extends Singleton {
 	 */
 	public function render_meta_box(): void {
 		// phpcs:ignore
-		echo '<div id="' . Base::APP2_SELECTOR . '" class="relative"></div>';
+		echo '<div id="' . substr(Base::APP2_SELECTOR, 1) . '" class="relative"></div>';
 	}
 
 
@@ -254,15 +263,15 @@ final class CPT extends Singleton {
 		/* OK, it's safe for us to save the data now. */
 
 		// Sanitize the user input.
-		$meta_data = \sanitize_text_field( $_POST[ Plugin::SNAKE . '_meta' ] );
+		$meta_data = \sanitize_text_field( $_POST[ Plugin::$snake . '_meta' ] );
 
 		// Update the meta field.
-		\update_post_meta( $post_id, Plugin::SNAKE . '_meta', $meta_data );
+		\update_post_meta( $post_id, Plugin::$snake . '_meta', $meta_data );
 	}
 
 	/**
 	 * Load custom template
-	 * Set {Plugin::KEBAB}/{slug}/report  php template
+	 * Set {Plugin::$kebab}/{slug}/report  php template
 	 *
 	 * @param string $template Template.
 	 */
@@ -278,13 +287,4 @@ final class CPT extends Singleton {
 	}
 }
 
-CPT::get(
-	array(
-		'post_metas' => array( 'meta', 'settings' ),
-		'rewrite'    => array(
-			'template_path' => 'test.php',
-			'slug'          => 'test',
-			'var'           => Plugin::SNAKE . '_test',
-		),
-	)
-);
+CPT::instance();

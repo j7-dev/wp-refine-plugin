@@ -19,19 +19,23 @@
   ],
   "config": {
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
     }
   },
   "require": {
     "kucrut/vite-for-wp": "^0.8.0",
-    "yahnis-elsts/plugin-update-checker": "^5.3",
-    "j7-dev/tgm-plugin-activation-forked": "1.2.3",
-    "micropackage/singleton": "^1.1"
+    "j7-dev/wp-utils": "0.2.9"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "@stable",
     "wp-coding-standards/wpcs": "@stable",
-    "dealerdirect/phpcodesniffer-composer-installer": "@stable"
+    "dealerdirect/phpcodesniffer-composer-installer": "@stable",
+    "phpcompatibility/php-compatibility": "@stable",
+    "phpstan/phpstan": "^1.11",
+    "php-stubs/woocommerce-stubs": "^9.0",
+    "php-stubs/wordpress-stubs": "^6.5",
+    "phpstan/extension-installer": "^1.4"
   },
   "scripts": {
     "lint": "phpcs"
