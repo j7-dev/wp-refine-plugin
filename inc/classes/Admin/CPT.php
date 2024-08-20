@@ -10,6 +10,9 @@ namespace J7\WpRefinePlugin\Admin;
 use J7\WpRefinePlugin\Utils\Base;
 use J7\WpRefinePlugin\Plugin;
 
+if (class_exists('J7\WpRefinePlugin\Admin\CPT')) {
+	return;
+}
 /**
  * Class CPT
  */
@@ -17,7 +20,7 @@ final class CPT {
 	use \J7\WpUtils\Traits\SingletonTrait;
 
 	/**
-	 * Post metas
+	 * Post meta
 	 *
 	 * @var array
 	 */
@@ -31,8 +34,6 @@ final class CPT {
 
 	/**
 	 * Constructor
-	 *
-	 * @param array $args Arguments.
 	 */
 	public function __construct() {
 		$args = [
@@ -286,5 +287,3 @@ final class CPT {
 		return $template;
 	}
 }
-
-CPT::instance();

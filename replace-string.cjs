@@ -67,6 +67,7 @@ function replaceString(str) {
 
 	replace.sync({
 		files: [
+			'./composer.json',
 			'./plugin.php',
 			'./inc/class/class-bootstrap.php',
 			'./inc/class/admin/class-cpt.php',

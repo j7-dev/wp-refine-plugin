@@ -10,23 +10,30 @@ namespace J7\WpRefinePlugin;
 use J7\WpRefinePlugin\Utils\Base;
 use Kucrut\Vite;
 
+if ( class_exists( 'J7\WpRefinePlugin\Bootstrap' ) ) {
+	return;
+}
 /**
  * Class Bootstrap
  */
 final class Bootstrap {
 	use \J7\WpUtils\Traits\SingletonTrait;
 
+	/**
+	 * @var array
+	 * Store instances of classes
+	 */
+	public $instances = [];
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		require_once __DIR__ . '/utils/index.php';
-		require_once __DIR__ . '/admin/index.php';
-		require_once __DIR__ . '/front-end/index.php';
+		$this->instances['FrontEnd\Entry'] = FrontEnd\Entry::instance();
+		$this->instances['Admin\CPT']      = Admin\CPT::instance();
 
-		\add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_script' ], 99 );
-		\add_action( 'wp_enqueue_scripts', [ $this, 'frontend_enqueue_script' ], 99 );
+		\add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_script' ] );
+		\add_action( 'wp_enqueue_scripts', [ __CLASS__, 'frontend_enqueue_script' ]);
 	}
 
 	/**
@@ -37,8 +44,8 @@ final class Bootstrap {
 	 *
 	 * @return void
 	 */
-	public function admin_enqueue_script( $hook ): void {
-		$this->enqueue_script();
+	public static function admin_enqueue_script( $hook ): void {
+		self::enqueue_script();
 	}
 
 
@@ -48,8 +55,8 @@ final class Bootstrap {
 	 *
 	 * @return void
 	 */
-	public function frontend_enqueue_script(): void {
-		$this->enqueue_script();
+	public static function frontend_enqueue_script(): void {
+		self::enqueue_script();
 	}
 
 	/**
@@ -58,7 +65,7 @@ final class Bootstrap {
 	 *
 	 * @return void
 	 */
-	public function enqueue_script(): void {
+	public static function enqueue_script(): void {
 
 		Vite\enqueue_asset(
 			Plugin::$dir . '/js/dist',

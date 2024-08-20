@@ -9,6 +9,9 @@ namespace J7\WpRefinePlugin\FrontEnd;
 
 use J7\WpRefinePlugin\Utils\Base;
 
+if (class_exists('J7\WpRefinePlugin\FrontEnd\Entry')) {
+	return;
+}
 /**
  * Class FrontEnd
  */
@@ -19,16 +22,14 @@ final class Entry {
 	 * Constructor
 	 */
 	public function __construct() {
-		\add_action( 'wp_footer', [ $this, 'render_app' ] );
+		\add_action( 'wp_footer', [ __CLASS__, 'render_app' ] );
 	}
 
 	/**
 	 * Render application's markup
 	 */
-	public function render_app(): void {
+	public static function render_app(): void {
 		// phpcs:ignore
-		echo '<div id="' . substr(Base::APP2_SELECTOR, 1) . '"></div>';
+		echo '<div id="' . substr(Base::APP1_SELECTOR, 1) . '"></div>';
 	}
 }
-
-Entry::instance();
