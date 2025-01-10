@@ -5,7 +5,7 @@
  * Description:       WP Refine Plugin is a boilerplate for creating a WordPress plugin with React, Tailwind, TypeScript, React Query v4, SCSS and Vite.
  * Version:           4.0.5
  * Requires at least: 5.7
- * Requires PHP:      7.4
+ * Requires PHP:      8.0
  * Author:            J7
  * Author URI:        https://github.com/j7-dev
  * License:           GPL v2 or later
