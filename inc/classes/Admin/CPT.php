@@ -277,11 +277,11 @@ final class CPT {
 	 * @param string $template Template.
 	 */
 	public function load_custom_template( $template ) {
-		$repor_template_path = Plugin::$dir . '/inc/templates/' . $this->rewrite['template_path'];
+		$report_template_path = Plugin::$dir . '/inc/templates/' . $this->rewrite['template_path'];
 
 		if ( \get_query_var( $this->rewrite['var'] ) ) {
-			if ( file_exists( $repor_template_path ) ) {
-				return $repor_template_path;
+			if ( file_exists( $report_template_path ) ) {
+				return $report_template_path;
 			}
 		}
 		return $template;

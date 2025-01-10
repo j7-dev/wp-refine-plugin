@@ -20,17 +20,11 @@ final class Bootstrap {
 	use \J7\WpUtils\Traits\SingletonTrait;
 
 	/**
-	 * @var array
-	 * Store instances of classes
-	 */
-	public $instances = [];
-
-	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->instances['FrontEnd\Entry'] = FrontEnd\Entry::instance();
-		$this->instances['Admin\CPT']      = Admin\CPT::instance();
+		FrontEnd\Entry::instance();
+		Admin\CPT::instance();
 
 		\add_action( 'admin_enqueue_scripts', [ __CLASS__, 'admin_enqueue_script' ] );
 		\add_action( 'wp_enqueue_scripts', [ __CLASS__, 'frontend_enqueue_script' ]);
@@ -77,7 +71,7 @@ final class Bootstrap {
 		);
 
 		$post_id   = \get_the_ID();
-		$permalink = \get_permalink( $post_id );
+		$permalink = $post_id ? \get_permalink( $post_id ) : '';
 
 		\wp_localize_script(
 			Plugin::$kebab,
