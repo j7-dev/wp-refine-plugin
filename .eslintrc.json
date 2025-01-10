@@ -66,9 +66,8 @@
 			}
 		],
 		"no-shadow": "error",
-		"@typescript-eslint/no-shadow": [
-			"error"
-		],
+		"@typescript-eslint/no-shadow": "error",
+		"@typescript-eslint/ban-ts-comment": "off",
 		"camelcase": "off",
 		"jsdoc/valid-types": "off",
 		"@typescript-eslint/no-unused-vars": [
@@ -92,7 +91,8 @@
 				"allowArrayStart": true,
 				"allowArrayEnd": true
 			}
-		]
+		],
+		"jsdoc/require-returns-description": "off"
 	},
 	"overrides": [
 		{

@@ -8,21 +8,36 @@ import path from 'path'
 import { v4wp } from '@kucrut/vite-for-wp'
 
 export default {
-  plugins: [
-    alias(),
-    react(),
-    tsconfigPaths(),
+	plugins: [
+		alias(),
+		react(),
+		tsconfigPaths(),
 
-    // liveReload(__dirname + '/**/*.php'), // Optional, if you want to reload page on php changed
+		// liveReload(__dirname + '/**/*.php'), // Optional, if you want to reload page on php changed
 
-    v4wp({
-      input: 'js/src/main.tsx', // Optional, defaults to 'src/main.js'.
-      outDir: 'js/dist', // Optional, defaults to 'dist'.
-    }),
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'js/src'),
-    },
-  },
+		v4wp({
+			input: 'js/src/main.tsx', // Optional, defaults to 'src/main.js'.
+			outDir: 'js/dist', // Optional, defaults to 'dist'.
+		}),
+	],
+
+	// build: {
+	// 	rollupOptions: {
+	// 		output: {
+	// 			// 修改入口檔案名稱
+	// 			entryFileNames: 'index.js',
+
+	// 			// 修改代碼分割後的檔案名稱
+	// 			chunkFileNames: '[name]-[hash].js',
+
+	// 			// 修改資源檔案名稱
+	// 			assetFileNames: '[name]-[hash].[ext]',
+	// 		},
+	// 	},
+	// },
+	resolve: {
+		alias: {
+			'@': path.resolve(__dirname, 'js/src'),
+		},
+	},
 }

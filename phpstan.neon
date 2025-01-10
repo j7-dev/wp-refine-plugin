@@ -1,10 +1,14 @@
 parameters:
-	level: 6
+	level: 9
 	paths:
 		- plugin.php
 		- inc/
 	ignoreErrors:
+		- '#Access to constant .* on an unknown class#'
 		- '#Constant .* not found#'
+		- '#Function .* not found#'
+		- '#Cannot cast mixed to .*#'
+		- '#Using nullsafe method call on non-nullable type .*#'
 	excludePaths:
 		- js/*
 		- vendor/*
@@ -12,3 +16,4 @@ parameters:
 	bootstrapFiles:
 		- vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
+		- ../powerhouse/plugin.php

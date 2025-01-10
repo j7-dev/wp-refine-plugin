@@ -19,6 +19,10 @@ declare (strict_types = 1);
 
 namespace J7\WpRefinePlugin;
 
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 if ( \class_exists( 'J7\WpRefinePlugin\Plugin' ) ) {
 	return;
 }
@@ -36,20 +40,23 @@ final class Plugin {
 	 */
 	public function __construct() {
 
-		// $this->required_plugins = array(
-		// array(
-		// 'name'     => 'WooCommerce',
-		// 'slug'     => 'woocommerce',
-		// 'required' => true,
-		// 'version'  => '7.6.0',
-		// ),
-		// array(
-		// 'name'     => 'WP Toolkit',
-		// 'slug'     => 'wp-toolkit',
-		// 'source'   => 'Author URL/wp-toolkit/releases/latest/download/wp-toolkit.zip',
-		// 'required' => true,
-		// ),
-		// );
+		// self::$template_page_names = [ '404' ];
+
+		$this->required_plugins = [
+			// [
+			// 'name'     => 'WooCommerce',
+			// 'slug'     => 'woocommerce',
+			// 'required' => true,
+			// 'version'  => '7.6.0',
+			// ],
+			// [
+			// 'name'     => 'Powerhouse',
+			// 'slug'     => 'powerhouse',
+			// 'source'   => 'https://github.com/j7-dev/wp-powerhouse/releases/latest/download/powerhouse.zip',
+			// 'version'  => '2.0.14',
+			// 'required' => true,
+			// ],
+		];
 
 		$this->init(
 			[
