@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 // eslint-disable-next-line no-undef
 module.exports = {
-	important: '.tailwind',
+	// important: '.tailwind',  // you have to use tailwindcss inside a .tailwind class container, or just type true.
 	corePlugins: {
 		preflight: false,
 	},
@@ -11,10 +11,12 @@ module.exports = {
 		'./inc/assets/src/**/*.ts',
 	],
 	theme: {
-		animation: {
-			pulse: 'tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-		},
 		extend: {
+			animation: {
+				// why need this? because elementor plugin might conflict with same animate keyframe name
+				// we override the animation name with this
+				pulse: 'tw-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+			},
 			screens: {
 				sm: '576px', // iphone SE
 				md: '810px', // ipad Portrait
@@ -36,7 +38,7 @@ module.exports = {
 					direction: 'rtl',
 				},
 
-				// 與 WordPress 衝突的 class
+				// classes conflicted with WordPress
 				'.tw-hidden': {
 					display: 'none',
 				},
@@ -58,6 +60,7 @@ module.exports = {
 	],
 	safelist: [],
 	blocklist: [
+		// classes conflicted with WordPress
 		'hidden',
 		'columns-1',
 		'columns-2',
