@@ -20,7 +20,9 @@
 		"zip": "env-cmd -f ./.env node ./release/zip.cjs",
 		"create:release": "env-cmd -f ./.env node ./release/create-release.cjs",
 		"sync:version": "wp-update-project-version -s package.json -p plugin.php",
-		"replace-string": "node ./replace-string.cjs"
+		"replace-string": "node ./replace-string.cjs",
+		"i18n": "wp i18n make-pot . languages/wp_refine_plugin.pot",
+		"i18n:commit": "yarn i18n && git add . && git commit --amend --no-edit"
 	},
 	"dependencies": {
 		"@refinedev/antd": "^5.37.5",

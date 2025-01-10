@@ -37,7 +37,7 @@ function replaceString(str) {
 	replace.sync({
 		files: [
 			'./plugin.php',
-			'./inc/class/admin/class-cpt.php',
+			'./inc/classes/Admin/CPT.php',
 			'./js/src/utils/env.tsx',
 		],
 		from: /My Refine App/g,
@@ -47,7 +47,7 @@ function replaceString(str) {
 	replace.sync({
 		files: [
 			'./plugin.php',
-			'./inc/class/admin/class-cpt.php',
+			'./inc/classes/Admin/CPT.php',
 			'./js/src/utils/env.tsx',
 		],
 		from: /my-refine-app/g,
@@ -57,7 +57,9 @@ function replaceString(str) {
 	replace.sync({
 		files: [
 			'./plugin.php',
-			'./inc/class/utils/class-base.php',
+			'./inc/classes/Utils/Base.php',
+			'./inc/classes/Admin/CPT.php',
+			'./inc/classes/FrontEnd/Entry.php',
 			'./inc/templates/test.php',
 			'./js/src/utils/env.tsx',
 		],
@@ -69,10 +71,10 @@ function replaceString(str) {
 		files: [
 			'./composer.json',
 			'./plugin.php',
-			'./inc/class/class-bootstrap.php',
-			'./inc/class/admin/class-cpt.php',
-			'./inc/class/front-end/class-entry.php',
-			'./inc/class/utils/class-base.php',
+			'./inc/classes/Bootstrap.php',
+			'./inc/classes/Admin/CPT.php',
+			'./inc/classes/FrontEnd/Entry.php',
+			'./inc/classes/Utils/Base.php',
 		],
 		from: /WpRefinePlugin/g,
 		to: pascalName,
@@ -83,6 +85,7 @@ function replaceString(str) {
 			'./composer.json',
 			'./package.json',
 			'./plugin.php',
+			'./release/.release-it.cjs',
 		],
 		from: /wp-refine-plugin/g,
 		to: kebabName,
@@ -90,8 +93,32 @@ function replaceString(str) {
 
 	replace.sync({
 		files: [
+			'./package.json',
+		],
+		from: /create-wp-refine-plugin/g,
+		to: kebabName,
+	})
+
+	replace.sync({
+		files: [
+			'./package.json',
+		],
+		from: "wp i18n make-pot . languages/wp_refine_plugin.pot",
+		to: `wp i18n make-pot . languages/${snakeName}.pot`,
+	})
+
+	replace.sync({
+		files: [
+			'./package.json',
+		],
+		from: /"version": "[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}"/,
+		to: '"version": "0.0.1"',
+	})
+
+	replace.sync({
+		files: [
 			'./plugin.php',
-			'./inc/class/admin/class-cpt.php',
+			'./inc/classes/Admin/CPT.php',
 		],
 		from: /wp_refine_plugin/g,
 		to: snakeName,
@@ -125,8 +152,12 @@ function replaceString(str) {
 			to: '* Author:            Your Name',
 		},
 		{
+			from: "'app_name'    => 'My Refine App'",
+			to: `'app_name'    => '${str}'`,
+		},
+		{
 			from: 'https://github.com/j7-dev',
-			to: 'Author URL',
+			to: '[YOUR GITHUB URL]',
 		},
 	]
 
