@@ -54,6 +54,9 @@ module.exports = {
 				'.tw-block': {
 					display: 'block',
 				},
+				'.tw-inline': {
+					display: 'inline',
+				},
 			}
 			addUtilities(newUtilities, ['responsive', 'hover'])
 		},
@@ -66,5 +69,6 @@ module.exports = {
 		'columns-2',
 		'fixed',
 		'block',
+		'inline',
 	],
 }
