@@ -13,67 +13,17 @@ use J7\WpRefinePlugin\Plugin;
 if (class_exists('J7\WpRefinePlugin\Admin\CPT')) {
 	return;
 }
-/**
- * Class CPT
- */
+/** Class CPT */
 final class CPT {
 	use \J7\WpUtils\Traits\SingletonTrait;
 
-	/**
-	 * Post meta
-	 *
-	 * @var array
-	 */
-	public $post_meta_array = [];
-	/**
-	 * Rewrite
-	 *
-	 * @var array
-	 */
-	public $rewrite = [];
+	const POST_TYPE = 'my-refine-app';
 
-	/**
-	 * Constructor
-	 */
+	/** Constructor */
 	public function __construct() {
-		$args = [
-			'post_meta_array' => [ 'meta', 'settings' ],
-			'rewrite'         => [
-				'template_path' => 'test.php',
-				'slug'          => 'test',
-				'var'           => Plugin::$snake . '_test',
-			],
-		];
-
-		$this->post_meta_array = $args['post_meta_array'];
-		$this->rewrite         = $args['rewrite'] ?? [];
-
-		\add_action( 'init', [ $this, 'init' ] );
-
-		if ( ! empty( $args['post_meta_array'] ) ) {
-			\add_action( 'rest_api_init', [ $this, 'add_post_meta' ] );
-		}
-
-		\add_action( 'load-post.php', [ $this, 'init_metabox' ] );
-		\add_action( 'load-post-new.php', [ $this, 'init_metabox' ] );
-
-		if ( ! empty( $args['rewrite'] ) ) {
-			\add_filter( 'query_vars', [ $this, 'add_query_var' ] );
-			\add_filter( 'template_include', [ $this, 'load_custom_template' ], 99 );
-		}
-	}
-
-	/**
-	 * Initialize
-	 */
-	public function init(): void {
-		$this->register_cpt();
-
-		// add {$this->post_type}/{slug}/test rewrite rule
-		if ( ! empty( $this->rewrite ) ) {
-			\add_rewrite_rule( '^my-refine-app/([^/]+)/' . $this->rewrite['slug'] . '/?$', 'index.php?post_type=my-refine-app&name=$matches[1]&' . $this->rewrite['var'] . '=1', 'top' );
-			\flush_rewrite_rules();
-		}
+		\add_action( 'init', [ $this, 'register_cpt' ] );
+		\add_action( 'load-post.php', [ $this, 'add_metabox' ] );
+		\add_action( 'load-post-new.php', [ $this, 'add_metabox' ] );
 	}
 
 	/**
@@ -143,34 +93,9 @@ final class CPT {
 			],
 		];
 
-		\register_post_type( 'my-refine-app', $args );
+		\register_post_type( self::POST_TYPE, $args );
 	}
 
-	/**
-	 * Register meta fields for post type to show in rest api
-	 */
-	public function add_post_meta(): void {
-		foreach ( $this->post_meta_array as $meta_key ) {
-			\register_meta(
-				'post',
-				Plugin::$snake . '_' . $meta_key,
-				[
-					'type'         => 'string',
-					'show_in_rest' => true,
-					'single'       => true,
-				]
-			);
-		}
-	}
-
-	/**
-	 * Meta box initialization.
-	 */
-	public function init_metabox(): void {
-		\add_action( 'add_meta_boxes', [ $this, 'add_metabox' ] );
-		\add_action( 'save_post', [ $this, 'save_metabox' ], 10, 2 );
-		\add_filter( 'rewrite_rules_array', [ $this, 'custom_post_type_rewrite_rules' ] );
-	}
 
 	/**
 	 * Adds the meta box.
@@ -178,12 +103,13 @@ final class CPT {
 	 * @param string $post_type Post type.
 	 */
 	public function add_metabox( string $post_type ): void {
-		if ( in_array( $post_type, [ Plugin::$kebab ] ) ) {
+		$post_type = $post_type ?: $_GET['post_type']; // phpcs:ignore
+		if ( in_array( $post_type, [ self::POST_TYPE ] ) ) {
 			\add_meta_box(
-				Plugin::$kebab . '-metabox',
+				self::POST_TYPE . '-metabox',
 				__( 'My Refine App', 'wp_refine_plugin' ),
 				[ $this, 'render_meta_box' ],
-				$post_type,
+				self::POST_TYPE,
 				'advanced',
 				'high'
 			);
@@ -196,94 +122,5 @@ final class CPT {
 	public function render_meta_box(): void {
 		// phpcs:ignore
 		echo '<div id="' . substr(Base::APP2_SELECTOR, 1) . '" class="relative"></div>';
-	}
-
-
-	/**
-	 * Add query var
-	 *
-	 * @param array $vars Vars.
-	 * @return array
-	 */
-	public function add_query_var( $vars ) {
-		$vars[] = $this->rewrite['var'];
-		return $vars;
-	}
-
-	/**
-	 * Custom post type rewrite rules
-	 *
-	 * @param array $rules Rules.
-	 * @return array
-	 */
-	public function custom_post_type_rewrite_rules( $rules ) {
-		global $wp_rewrite;
-		$wp_rewrite->flush_rules();
-		return $rules;
-	}
-
-	/**
-	 * Save the meta when the post is saved.
-	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
-	 */
-	public function save_metabox( $post_id, $post ) { // phpcs:ignore
-		// phpcs:disable
-		/*
-		* We need to verify this came from the our screen and with proper authorization,
-		* because save_post can be triggered at other times.
-		*/
-
-		// Check if our nonce is set.
-		if ( ! isset( $_POST['_wpnonce'] ) ) {
-			return $post_id;
-		}
-
-		$nonce = $_POST['_wpnonce'];
-
-		/*
-		* If this is an autosave, our form has not been submitted,
-		* so we don't want to do anything.
-		*/
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return $post_id;
-		}
-
-		$post_type = \sanitize_text_field( $_POST['post_type'] ?? '' );
-
-		// Check the user's permissions.
-		if ( 'my-refine-app' !== $post_type ) {
-			return $post_id;
-		}
-
-		if ( ! \current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id;
-		}
-
-		/* OK, it's safe for us to save the data now. */
-
-		// Sanitize the user input.
-		$meta_data = \sanitize_text_field( $_POST[ Plugin::$snake . '_meta' ] );
-
-		// Update the meta field.
-		\update_post_meta( $post_id, Plugin::$snake . '_meta', $meta_data );
-	}
-
-	/**
-	 * Load custom template
-	 * Set {Plugin::$kebab}/{slug}/report  php template
-	 *
-	 * @param string $template Template.
-	 */
-	public function load_custom_template( $template ) {
-		$report_template_path = Plugin::$dir . '/inc/templates/' . $this->rewrite['template_path'];
-
-		if ( \get_query_var( $this->rewrite['var'] ) ) {
-			if ( file_exists( $report_template_path ) ) {
-				return $report_template_path;
-			}
-		}
-		return $template;
 	}
 }

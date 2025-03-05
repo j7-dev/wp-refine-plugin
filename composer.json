@@ -29,18 +29,18 @@
 		}
 	},
 	"require": {
-		"kucrut/vite-for-wp": "^0.8.0",
-		"j7-dev/wp-utils": "0.3.4"
+		"kucrut/vite-for-wp": "^0.10.0",
+		"j7-dev/wp-utils": "0.3.19"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "@stable",
 		"wp-coding-standards/wpcs": "@stable",
 		"dealerdirect/phpcodesniffer-composer-installer": "@stable",
 		"phpcompatibility/php-compatibility": "@stable",
-		"phpstan/phpstan": "^1.11",
-		"php-stubs/woocommerce-stubs": "^9.0",
-		"php-stubs/wordpress-stubs": "^6.5",
-		"phpstan/extension-installer": "^1.4"
+		"phpstan/phpstan": "@stable",
+		"php-stubs/woocommerce-stubs": "@stable",
+		"php-stubs/wordpress-stubs": "@stable",
+		"phpstan/extension-installer": "@stable"
 	},
 	"scripts": {
 		"lint": "phpcs"

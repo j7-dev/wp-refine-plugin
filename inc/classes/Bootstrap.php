@@ -13,15 +13,11 @@ use Kucrut\Vite;
 if ( class_exists( 'J7\WpRefinePlugin\Bootstrap' ) ) {
 	return;
 }
-/**
- * Class Bootstrap
- */
+/** Class Bootstrap */
 final class Bootstrap {
 	use \J7\WpUtils\Traits\SingletonTrait;
 
-	/**
-	 * Constructor
-	 */
+	/** Constructor */
 	public function __construct() {
 		FrontEnd\Entry::instance();
 		Admin\CPT::instance();
