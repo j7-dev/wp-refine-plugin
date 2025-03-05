@@ -34,7 +34,7 @@ module.exports = {
 	plugins: [
 		function ({ addUtilities }) {
 			const newUtilities = {
-				'.rtl': {
+				'.right-to-left': {
 					direction: 'rtl',
 				},
 
@@ -70,5 +70,6 @@ module.exports = {
 		'fixed',
 		'block',
 		'inline',
+		'rtl'
 	],
 }
