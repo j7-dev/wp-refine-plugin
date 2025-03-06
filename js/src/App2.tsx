@@ -55,24 +55,21 @@ function App() {
 					},
 				]}
 				options={{
-					syncWithLocation: false,
+					syncWithLocation: true,
 					warnWhenUnsavedChanges: true,
 					projectId: 'IIIxOo-nIeSnx-oood94',
 				}}
 			>
 				<Routes>
-					{/* <Route
-            element={
-              <ThemedLayoutV2
-                Sider={(props) => <ThemedSiderV2 {...props} fixed />}
-              >
-                <Outlet />
-              </ThemedLayoutV2>
-            }
-          ></Route> */}
-					<Route element={<Outlet />}>
+					<Route
+						element={
+							<ThemedLayoutV2 Sider={(props) => <ThemedSiderV2 {...props} />}>
+								<Outlet />
+							</ThemedLayoutV2>
+						}
+					>
 						<Route index element={<DefaultPage />} />
-						<Route path="/about" element={<About />} />
+						<Route path="about" element={<About />} />
 						<Route path="*" element={<ErrorComponent />} />
 					</Route>
 				</Routes>

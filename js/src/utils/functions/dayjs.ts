@@ -31,3 +31,23 @@ export function parseDatePickerValue(
 
   return (value as Dayjs).format(format)
 }
+
+
+export const dateRelatedFields = [
+  {
+    label: '商品發佈日期',
+    value: 'date_created',
+  },
+  {
+    label: '商品修改日期',
+    value: 'date_modified',
+  },
+  {
+    label: '特價開始日期',
+    value: 'date_on_sale_from',
+  },
+  {
+    label: '特價結束日期',
+    value: 'date_on_sale_to',
+  },
+]

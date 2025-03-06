@@ -5,7 +5,12 @@ import About from '@/pages/about'
 
 import { Refine } from '@refinedev/core'
 
-import { ErrorComponent, useNotificationProvider } from '@refinedev/antd'
+import {
+	ErrorComponent,
+	useNotificationProvider,
+	ThemedLayoutV2,
+	ThemedSiderV2,
+} from '@refinedev/antd'
 import '@refinedev/antd/dist/reset.css'
 import routerBindings, {
 	DocumentTitleHandler,
@@ -36,10 +41,15 @@ function App() {
 				}}
 			>
 				<Routes>
-					<Route element={<Outlet />}>
+					<Route
+						element={
+							<ThemedLayoutV2 Sider={(props) => <ThemedSiderV2 {...props} />}>
+								<Outlet />
+							</ThemedLayoutV2>
+						}
+					>
 						<Route index element={<DefaultPage />} />
-						<Route path="/about" element={<About />} />
-
+						<Route path="about" element={<About />} />
 						<Route path="*" element={<ErrorComponent />} />
 					</Route>
 				</Routes>
