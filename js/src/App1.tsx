@@ -38,6 +38,17 @@ function App() {
 					syncWithLocation: false,
 					warnWhenUnsavedChanges: true,
 					projectId: 'wp-refine-plugin',
+					reactQuery: {
+						clientConfig: {
+							defaultOptions: {
+								queries: {
+									staleTime: 1000 * 60 * 10,
+									cacheTime: 1000 * 60 * 10,
+									retry: 0,
+								},
+							},
+						},
+					},
 				}}
 			>
 				<Routes>
