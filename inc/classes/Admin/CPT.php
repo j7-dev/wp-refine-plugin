@@ -1,29 +1,24 @@
 <?php
-/**
- * Custom Post Type: My Refine App
- */
 
 declare(strict_types=1);
 
 namespace J7\WpRefinePlugin\Admin;
 
 use J7\WpRefinePlugin\Utils\Base;
-use J7\WpRefinePlugin\Plugin;
 
 if (class_exists('J7\WpRefinePlugin\Admin\CPT')) {
 	return;
 }
 /** Class CPT */
 final class CPT {
-	use \J7\WpUtils\Traits\SingletonTrait;
 
 	const POST_TYPE = 'my-refine-app';
 
-	/** Constructor */
-	public function __construct() {
-		\add_action( 'init', [ $this, 'register_cpt' ] );
-		\add_action( 'load-post.php', [ $this, 'add_metabox' ] );
-		\add_action( 'load-post-new.php', [ $this, 'add_metabox' ] );
+	/** Register hooks */
+	public static function register_hooks() {
+		\add_action( 'init', [ __CLASS__, 'register_cpt' ] );
+		\add_action( 'load-post.php', [ __CLASS__, 'add_metabox' ] );
+		\add_action( 'load-post-new.php', [ __CLASS__, 'add_metabox' ] );
 	}
 
 	/**
@@ -102,13 +97,13 @@ final class CPT {
 	 *
 	 * @param string $post_type Post type.
 	 */
-	public function add_metabox( string $post_type ): void {
+	public static function add_metabox( string $post_type ): void {
 		$post_type = $post_type ?: $_GET['post_type']; // phpcs:ignore
 		if ( in_array( $post_type, [ self::POST_TYPE ] ) ) {
 			\add_meta_box(
 				self::POST_TYPE . '-metabox',
 				__( 'My Refine App', 'wp_refine_plugin' ),
-				[ $this, 'render_meta_box' ],
+				[ __CLASS__, 'render_meta_box' ],
 				self::POST_TYPE,
 				'advanced',
 				'high'
@@ -119,7 +114,7 @@ final class CPT {
 	/**
 	 * Render meta box.
 	 */
-	public function render_meta_box(): void {
+	public static function render_meta_box(): void {
 		// phpcs:ignore
 		echo '<div id="' . substr(Base::APP2_SELECTOR, 1) . '" class="relative"></div>';
 	}

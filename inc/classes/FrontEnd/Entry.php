@@ -1,7 +1,4 @@
 <?php
-/**
- * Front-end Entry
- */
 
 declare(strict_types=1);
 
@@ -12,22 +9,15 @@ use J7\WpRefinePlugin\Utils\Base;
 if (class_exists('J7\WpRefinePlugin\FrontEnd\Entry')) {
 	return;
 }
-/**
- * Class FrontEnd
- */
+/** Class FrontEnd */
 final class Entry {
-	use \J7\WpUtils\Traits\SingletonTrait;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
+	/** Register hooks */
+	public static function register_hooks(): void {
 		\add_action( 'wp_footer', [ __CLASS__, 'render_app' ] );
 	}
 
-	/**
-	 * Render application's markup
-	 */
+	/** Render application's markup */
 	public static function render_app(): void {
 		// phpcs:ignore
 		echo '<div id="' . substr(Base::APP1_SELECTOR, 1) . '"></div>';
