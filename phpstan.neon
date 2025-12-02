@@ -9,6 +9,7 @@ parameters:
 		- '#Function .* not found#'
 		- '#Cannot cast mixed to .*#'
 		- '#Using nullsafe method call on non-nullable type .*#'
+	reportUnmatchedIgnoredErrors: false
 	excludePaths:
 		- js/*
 		- vendor/*

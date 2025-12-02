@@ -43,6 +43,7 @@
 		"phpstan/extension-installer": "@stable"
 	},
 	"scripts": {
-		"lint": "phpcs"
+		"lint": "phpcs",
+		"analyse": "phpstan analyse inc --memory-limit=6G"
 	}
 }
