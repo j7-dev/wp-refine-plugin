@@ -29,8 +29,8 @@
 		}
 	},
 	"require": {
-		"kucrut/vite-for-wp": "^0.10.0",
-		"j7-dev/wp-utils": "0.3.19"
+		"kucrut/vite-for-wp": "^0.12",
+		"j7-dev/wp-utils": "^0.3"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "@stable",

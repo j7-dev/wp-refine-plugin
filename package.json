@@ -4,14 +4,14 @@
 	"version": "4.0.6",
 	"type": "module",
 	"scripts": {
-		"bootstrap": "yarn install && composer install --no-interaction",
+		"bootstrap": "pnpm install && composer install --no-interaction",
 		"dev": "vite",
 		"prebuild": "echo 'todo: remove console'",
 		"build": "vite build && node release/mv-manifest.cjs",
 		"preview": "vite preview",
 		"format": "prettier-eslint --write \"js/src/**/*.tsx\"",
-		"lint": "yarn eslint ./js/src/*.{ts,tsx} --ext .ts,.tsx && phpcbf",
-		"lint:fix": "yarn eslint ./js/src/*.{ts,tsx} --fix && phpcbf",
+		"lint": "pnpm eslint ./js/src/*.{ts,tsx} --ext .ts,.tsx && phpcbf",
+		"lint:fix": "pnpm eslint ./js/src/*.{ts,tsx} --fix && phpcbf",
 		"release": "env-cmd -f ./.env release-it patch --ci --verbose --config ./release/.release-it.cjs",
 		"release:build-only": "env-cmd -f ./.env release-it patch --ci --verbose --config ./release/.release-it.cjs --build-only",
 		"release:patch": "env-cmd -f ./.env release-it patch --ci --verbose --config ./release/.release-it.cjs",
@@ -22,7 +22,7 @@
 		"sync:version": "wp-update-project-version -s package.json -p plugin.php",
 		"replace-string": "node ./replace-string.cjs",
 		"i18n": "wp i18n make-pot . languages/wp_refine_plugin.pot",
-		"i18n:commit": "yarn i18n && git add . && git commit --amend --no-edit"
+		"i18n:commit": "pnpm i18n && git add . && git commit --amend --no-edit"
 	},
 	"dependencies": {
 		"@refinedev/antd": "5.45.1",
@@ -38,7 +38,7 @@
 		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
-		"@kucrut/vite-for-wp": "^0.8.0",
+		"@kucrut/vite-for-wp": "^0.12.0",
 		"@rollup/plugin-alias": "^5.1.0",
 		"@soderlind/wp-project-version-sync": "^2.0.2",
 		"@tanstack/react-query-devtools": "^5.28.14",
@@ -71,7 +71,8 @@
 		"prettier-eslint": "^16.3.0",
 		"prettier-eslint-cli": "^8.0.1",
 		"prettier-plugin-multiline-arrays": "^3.0.4",
-		"release-it": "^17.1.1",
+		"release-it": "^19.0.3",
+		"release-it-pnpm": "^4.6.6",
 		"replace-in-file": "^7.1.0",
 		"sass": "^1.72.0",
 		"tailwindcss": "^3.4.3",
@@ -80,8 +81,7 @@
 		"vite": "^5.2.7",
 		"vite-plugin-live-reload": "^3.0.3",
 		"vite-tsconfig-paths": "^4.3.2",
-		"yargs": "^17.7.2",
-		"yarn-upgrade-all": "^0.7.2"
+		"yargs": "^17.7.2"
 	},
 	"bin": "./bin/create.cjs"
 }
