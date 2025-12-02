@@ -9,192 +9,192 @@ export * from './utils'
 const { stringify } = queryString
 
 export const dataProvider = (
-  apiUrl: string,
-  httpClient: AxiosInstance = axiosInstance,
+	API_URL: string,
+	httpClient: AxiosInstance = axiosInstance,
 ): Omit<
-  Required<DataProvider>,
-  'createMany' | 'updateMany' | 'deleteMany'
+	Required<DataProvider>,
+	'createMany' | 'updateMany' | 'deleteMany'
 > => ({
-  getList: async ({ resource, pagination, filters, sorters, meta }) => {
+	getList: async ({ resource, pagination, filters, sorters, meta }) => {
 
-    const url = `${apiUrl}/${resource}`
+		const url = `${API_URL}/${resource}`
 
-    const { current = 1, pageSize = 10, mode = 'server' } = pagination ?? {}
+		const { current = 1, pageSize = 10, mode = 'server' } = pagination ?? {}
 
-    const { headers: headersFromMeta, method } = meta ?? {}
-    const requestMethod = (method as THttpMethods) ?? 'get'
+		const { headers: headersFromMeta, method } = meta ?? {}
+		const requestMethod = (method as THttpMethods) ?? 'get'
 
-    const queryFilters = generateFilter(filters)
+		const queryFilters = generateFilter(filters)
 
-    const query: {
-      page?: number
-      posts_per_page?: number
-      orderby?: TOrderBy
-      order?: TOrder
-    } = {}
+		const query: {
+			page?: number
+			posts_per_page?: number
+			orderby?: TOrderBy
+			order?: TOrder
+		} = {}
 
-    if (mode === 'server') {
-      query.page = current
-      query.posts_per_page = pageSize
-    }
+		if (mode === 'server') {
+			query.page = current
+			query.posts_per_page = pageSize
+		}
 
-    const generatedSort = generateSort(sorters)
-    if (generatedSort) {
-      const { _sort, _order } = generatedSort
-      query.orderby = _sort.join(',')
-      query.order = _order.join(',')
-    }
+		const generatedSort = generateSort(sorters)
+		if (generatedSort) {
+			const { _sort, _order } = generatedSort
+			query.orderby = _sort.join(',')
+			query.order = _order.join(',')
+		}
 
-    const { data, headers } = await httpClient[requestMethod](
-      `${url}?${stringify(query)}&${stringify(queryFilters, { arrayFormat: 'bracket' })}`,
-      {
-        headers: headersFromMeta,
-      },
-    )
+		const { data, headers } = await httpClient[requestMethod](
+			`${url}?${stringify(query)}&${stringify(queryFilters, { arrayFormat: 'bracket' })}`,
+			{
+				headers: headersFromMeta,
+			},
+		)
 
-    const total = headers?.['x-wp-total'] || data.length
+		const total = headers?.['x-wp-total'] || data.length
 
-    return {
-      data,
-      total,
-    }
-  },
+		return {
+			data,
+			total,
+		}
+	},
 
-  getMany: async ({ resource, ids, meta }) => {
-    const { headers, method } = meta ?? {}
-    const requestMethod = (method as THttpMethods) ?? 'get'
+	getMany: async ({ resource, ids, meta }) => {
+		const { headers, method } = meta ?? {}
+		const requestMethod = (method as THttpMethods) ?? 'get'
 
-    const { data } = await httpClient[requestMethod](
-      `${apiUrl}/${resource}?${stringify({ id: ids })}`,
-      { headers },
-    )
+		const { data } = await httpClient[requestMethod](
+			`${API_URL}/${resource}?${stringify({ id: ids })}`,
+			{ headers },
+		)
 
-    return {
-      data,
-    }
-  },
+		return {
+			data,
+		}
+	},
 
-  create: async ({ resource, variables, meta }) => {
-    const url = `${apiUrl}/${resource}`
+	create: async ({ resource, variables, meta }) => {
+		const url = `${API_URL}/${resource}`
 
-    const { headers, method } = meta ?? {}
-    const requestMethod = (method as THttpMethodsWithBody) ?? 'post'
+		const { headers, method } = meta ?? {}
+		const requestMethod = (method as THttpMethodsWithBody) ?? 'post'
 
-    const { data } = await httpClient[requestMethod](url, variables, {
-      headers,
-    })
+		const { data } = await httpClient[requestMethod](url, variables, {
+			headers,
+		})
 
-    return {
-      data,
-    }
-  },
+		return {
+			data,
+		}
+	},
 
-  update: async ({ resource, id, variables, meta }) => {
-    const url = `${apiUrl}/${resource}/${id}`
+	update: async ({ resource, id, variables, meta }) => {
+		const url = `${API_URL}/${resource}/${id}`
 
-    const { headers, method } = meta ?? {}
-    const requestMethod = (method as THttpMethodsWithBody) ?? 'patch'
+		const { headers, method } = meta ?? {}
+		const requestMethod = (method as THttpMethodsWithBody) ?? 'patch'
 
-    const { data } = await httpClient[requestMethod](url, variables, {
-      headers,
-    })
+		const { data } = await httpClient[requestMethod](url, variables, {
+			headers,
+		})
 
-    return {
-      data,
-    }
-  },
+		return {
+			data,
+		}
+	},
 
-  getOne: async ({ resource, id, meta }) => {
-    const url = `${apiUrl}/${resource}/${id}`
+	getOne: async ({ resource, id, meta }) => {
+		const url = `${API_URL}/${resource}/${id}`
 
-    const { headers, method } = meta ?? {}
-    const requestMethod = (method as THttpMethods) ?? 'get'
+		const { headers, method } = meta ?? {}
+		const requestMethod = (method as THttpMethods) ?? 'get'
 
-    const { data } = await httpClient[requestMethod](url, { headers })
+		const { data } = await httpClient[requestMethod](url, { headers })
 
-    return {
-      data,
-    }
-  },
+		return {
+			data,
+		}
+	},
 
-  deleteOne: async ({ resource, id, variables, meta }) => {
-    const url = `${apiUrl}/${resource}/${id}`
+	deleteOne: async ({ resource, id, variables, meta }) => {
+		const url = `${API_URL}/${resource}/${id}`
 
-    const { headers, method } = meta ?? {}
-    const requestMethod = (method as THttpMethodsWithBody) ?? 'delete'
+		const { headers, method } = meta ?? {}
+		const requestMethod = (method as THttpMethodsWithBody) ?? 'delete'
 
-    const { data } = await httpClient[requestMethod](url, {
-      data: variables,
-      headers,
-    })
+		const { data } = await httpClient[requestMethod](url, {
+			data: variables,
+			headers,
+		})
 
-    return {
-      data,
-    }
-  },
+		return {
+			data,
+		}
+	},
 
-  getApiUrl: () => {
-    return apiUrl
-  },
+	getAPI_URL: () => {
+		return API_URL
+	},
 
-  custom: async ({
-    url,
-    method,
-    filters,
-    sorters,
-    payload,
-    query,
-    headers,
-  }) => {
-    let requestUrl = `${url}?`
+	custom: async ({
+		url,
+		method,
+		filters,
+		sorters,
+		payload,
+		query,
+		headers,
+	}) => {
+		let requestUrl = `${url}?`
 
-    if (sorters) {
-      const generatedSort = generateSort(sorters)
-      if (generatedSort) {
-        const { _sort, _order } = generatedSort
-        const sortQuery = {
-          orderby: _sort.join(','),
-          order: _order.join(','),
-        }
-        requestUrl = `${requestUrl}&${stringify(sortQuery)}`
-      }
-    }
+		if (sorters) {
+			const generatedSort = generateSort(sorters)
+			if (generatedSort) {
+				const { _sort, _order } = generatedSort
+				const sortQuery = {
+					orderby: _sort.join(','),
+					order: _order.join(','),
+				}
+				requestUrl = `${requestUrl}&${stringify(sortQuery)}`
+			}
+		}
 
-    if (filters) {
-      const filterQuery = generateFilter(filters)
-      requestUrl = `${requestUrl}&${stringify(filterQuery)}`
-    }
+		if (filters) {
+			const filterQuery = generateFilter(filters)
+			requestUrl = `${requestUrl}&${stringify(filterQuery)}`
+		}
 
-    if (query) {
-      requestUrl = `${requestUrl}&${stringify(query)}`
-    }
+		if (query) {
+			requestUrl = `${requestUrl}&${stringify(query)}`
+		}
 
-    if (headers) {
-      httpClient.defaults.headers = {
-        ...httpClient.defaults.headers,
-        ...headers,
-      }
-    }
+		if (headers) {
+			httpClient.defaults.headers = {
+				...httpClient.defaults.headers,
+				...headers,
+			}
+		}
 
-    let axiosResponse
-    switch (method) {
-      case 'put':
-      case 'post':
-      case 'patch':
-        axiosResponse = await httpClient[method](url, payload)
-        break
-      case 'delete':
-        axiosResponse = await httpClient.delete(url, {
-          data: payload,
-        })
-        break
-      default:
-        axiosResponse = await httpClient.get(requestUrl)
-        break
-    }
+		let axiosResponse
+		switch (method) {
+			case 'put':
+			case 'post':
+			case 'patch':
+				axiosResponse = await httpClient[method](url, payload)
+				break
+			case 'delete':
+				axiosResponse = await httpClient.delete(url, {
+					data: payload,
+				})
+				break
+			default:
+				axiosResponse = await httpClient.get(requestUrl)
+				break
+		}
 
-    const { data } = axiosResponse
+		const { data } = axiosResponse
 
-    return Promise.resolve({ data })
-  },
+		return Promise.resolve({ data })
+	},
 })

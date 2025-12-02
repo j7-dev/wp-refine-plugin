@@ -18,17 +18,17 @@ import routerBindings, {
 } from '@refinedev/react-router-v6'
 import { dataProvider } from './rest-data-provider'
 import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
-import { apiUrl, kebab } from '@/utils'
+import { API_URL, KEBAB } from '@/utils'
 
 function App() {
 	return (
 		<HashRouter>
 			<Refine
 				dataProvider={{
-					default: dataProvider(`${apiUrl}/${kebab}`),
-					'wp-rest': dataProvider(`${apiUrl}/wp/v2`),
-					'wc-rest': dataProvider(`${apiUrl}/wc/v3`),
-					'wc-store': dataProvider(`${apiUrl}/wc/store/v1`),
+					default: dataProvider(`${API_URL}/${KEBAB}`),
+					'wp-rest': dataProvider(`${API_URL}/wp/v2`),
+					'wc-rest': dataProvider(`${API_URL}/wc/v3`),
+					'wc-store': dataProvider(`${API_URL}/wc/store/v1`),
 				}}
 				notificationProvider={useNotificationProvider}
 				routerProvider={routerBindings}
