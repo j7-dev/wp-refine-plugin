@@ -32,6 +32,7 @@
 		"@refinedev/inferencer": "5.0.3",
 		"@refinedev/react-router-v6": "4.6.2",
 		"@refinedev/simple-rest": "5.0.10",
+		"@release-it/bumper": "^7.0.5",
 		"@tanstack/react-query": "4.36.1",
 		"antd": "^5.29.1",
 		"axios": "^1.6.8",

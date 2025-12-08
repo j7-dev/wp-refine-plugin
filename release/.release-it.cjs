@@ -19,6 +19,16 @@ const release = !args.includes('--build-only') // Build release only or build re
 
 module.exports = {
 	releasedPluginName,
+	"plugins": {
+		"release-it-pnpm": {
+			"disableRelease": !release,
+			publishCommand: 'exit 0', // 發佈到 npm 上的命令
+		},
+		"@release-it/bumper": {
+			"in": "package.json",
+			"out": "package.json",
+		},
+	},
 	git: {
 		commit: release,
 		commitMessage: 'chore: release v${version}',
@@ -26,19 +36,20 @@ module.exports = {
 		tagName: 'v${version}',
 		commitArgs: ['-n'],
 		push: release,
+		requireCleanWorkingDir: release,
 	},
 	hooks: {
 		'before:init': [
-			'yarn build && echo ✅ build success',
+			'pnpm build && echo ✅ build success',
 		], // run before initialization
 		// 'after:[my-plugin]:bump': './bin/my-script.sh', // run after bumping version of my-plugin
 		'after:bump': [
 			release
-				? 'yarn sync:version && echo ✅ sync version success'
+				? 'pnpm sync:version && echo ✅ sync version success'
 				: 'echo 🚫 skip sync version',
-			'yarn create:release && echo ✅ create release files success',
+			'pnpm create:release && echo ✅ create release files success',
 			`cd release/${releasedPluginName}/${releasedPluginName} && composer install --no-dev && cd ../.. && echo ✅ composer install success`,
-			'yarn zip && echo ✅ create zip success',
+			'pnpm zip && echo ✅ create zip success',
 		], // run after bumping version
 		// 'after:git:release': 'echo After git push, before github release', // run after git push, before github release
 		'after:release': [
